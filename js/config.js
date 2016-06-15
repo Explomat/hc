@@ -7,7 +7,7 @@ servers
 	.addActions(
 		[
 			'getData',
-			'createExcelFile',
+			'createFile',
 			'createMeeting'
 		]);
 

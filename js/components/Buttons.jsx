@@ -50,7 +50,7 @@ var Buttons = React.createClass({
 		var curStep = AssessmentStore.getStep();
 		if (curStep === Steps.keys.secondStep || curStep === Steps.keys.thirdStep){
 			return (
-				<a style={Styles} href={Config.url.createPath({action_name: 'createExcelFile', pa_id: this.props.paId})}>
+				<a style={Styles} href={Config.url.createPath({action_name: 'createFile', pa_id: this.props.paId})}>
 					Распечатать бланк
 				</a>
 			);
