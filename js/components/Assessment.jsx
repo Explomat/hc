@@ -2,10 +2,18 @@ var React = require('react');
 var AssessmentStore = require('../stores/AssessmentStore');
 var Obj = require('../utils/object');
 var assign = require('lodash/assign');
+var ceil = require('lodash/ceil');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
 var AssessmentClasses = {
 	assessmentContainer: {
+		percentAverage: {
+			display: 'none',
+
+			displayAverage: {
+				display:  'block'
+			}
+		},
 		blockContainer: {
 			marginTop: '24px',
     		marginBottom: '24px',
@@ -59,22 +67,22 @@ function getPercentComplete(fact, min, targ){
 }
 
 function getSummWeight(tasks){
-	return tasks.length === 0 ? 0 : (tasks.map(function(t){
+	return ceil(tasks.length === 0 ? 0 : (tasks.map(function(t){
 		return Number(t.weight);
 	}).reduce(function(first, second){
 		return first +  second;
-	}));
+	})), 1);
 }
 
 function getAllPercentComplete(tasks){
 	var summWeight = getSummWeight(tasks);
 
-	return Math.round((tasks.length === 0 ? 0 : (tasks.map(function(t){
+	return ceil((tasks.length === 0 ? 0 : (tasks.map(function(t){
 		var percentComplete = getPercentComplete(t.fact, t.min, t.targ);
 		return Number(t.weight) * percentComplete;
 	}).reduce(function(first, second){
 		return first + second;
-	}))) / summWeight);
+	}))) / summWeight, 1);
 }
 
 
@@ -183,16 +191,25 @@ var Assessment = React.createClass({
 		blocks.forEach(function(b){
 			percent += getAllPercentComplete(b.tasks);
 		});
-		return Math.round(percent / blocks.length);
+		return ceil(percent / blocks.length, 1);
+	},
+
+	getCountBlocksWithTasks(){
+		var blocks = this.state.blocks;
+		return blocks.filter(function(b){
+			return b.tasks.length > 0
+		}).length;
 	},
 
 	render() {
+		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage.display) :
+																		Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage)
 		return (
 			<div>
 				{this.state.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
 				})}
-				<div>
+				<div style={percentAverageStyles}>
 					<h1>Средний процент выполнения по кварталам: {this.getAveragePercentComplete()}</h1>
 				</div>
 			</div>
