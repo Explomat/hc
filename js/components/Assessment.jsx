@@ -35,7 +35,8 @@ var AssessmentClasses = {
 				},
 
 				description: {
-					padding: '5px'
+					padding: '5px',
+					color: 'red'
 				},
 
 				task: {
@@ -59,10 +60,11 @@ function getPercentComplete(fact, min, targ){
 	min = Number(min);
 	targ = Number(targ);
 
-	if (Number(fact) <= Number(min)) {
+	if (fact <= min) {
 		return 0;
 	}
-	return ((fact - min) * 100) / (targ - min);
+	var percent = ((fact - min) * 100) / (targ - min);
+	return percent > 100 ? 100 : percent;
 
 }
 
@@ -151,12 +153,12 @@ var Block = React.createClass({
 						<tr>
 							<td style={descriptionStyles}>Суммарный вес индивидуальных показателей</td>
 							<td></td>
-							<td style={descriptionStyles}>{getSummWeight(this.props.tasks)}%</td>
+							<td>{getSummWeight(this.props.tasks)}%</td>
 						</tr>
 						<tr>
 							<td style={descriptionStyles}>% выполнения</td>
 							<td></td>
-							<td style={descriptionStyles}>{getAllPercentComplete(this.props.tasks)}%</td>
+							<td>{getAllPercentComplete(this.props.tasks)}%</td>
 						</tr>
 					</tbody>
 				</table>
@@ -183,8 +185,8 @@ var Assessment = React.createClass({
 		this.setState(getState());
 	},
 
-	getAveragePercentComplete(){
-		var blocks = this.state.blocks.filter(function(b){
+	getAveragePercentComplete(_blocks){
+		var blocks = _blocks.filter(function(b){
 			return b.tasks.length > 0
 		});
 		var percent = 0;
@@ -210,7 +212,7 @@ var Assessment = React.createClass({
 					return <Block key={index} {...b} />
 				})}
 				<div style={percentAverageStyles}>
-					<h1>Средний процент выполнения по кварталам: {this.getAveragePercentComplete()}</h1>
+					<h1>Средний процент выполнения по кварталам: {this.getAveragePercentComplete(this.state.blocks)}</h1>
 				</div>
 			</div>
 		);
