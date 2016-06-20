@@ -1,22 +1,18 @@
 var React = require('react');
 var AssessmentActions = require('../actions/AssessmentActions');
-var AssessmentStore = require('../stores/AssessmentStore');
+var BaseStore = require('../stores/BaseStore');
 var Steps = require('../utils/steps');
 var Config = require('../config');
-
-var Styles = {
-	backgroundColor: '#eeeeee',
-    backgroundImage: 'url(/pics/bg_btn_grey.png)',
-    color: '#666',
-    backgroundPosition: 'left center',
-    backgroundRepeat: 'repeat-x',
-    border: 'solid 2px #FFFFFF',
-    padding: '3px 15px 3px 15px',
-    textAlign: 'center',
-    margin: '0'
-}
+var Styles = require('../styles/ButtonsClasses');
+var UrlUtils = require('../utils/url');
 
 var Buttons = React.createClass({
+
+	propTypes(){
+		return {
+			printAction: React.PropTypes.string.isRequired
+		}
+	},
 
 	_createMeeting(subject, attendees){
 		if (!("ActiveXObject" in window) || !subject || !attendees) {
@@ -42,15 +38,17 @@ var Buttons = React.createClass({
 
 	getDefaultProps(){
 		return {
-			paId: ''
+			paId: '',
+			printAction: ''
 		}
 	},
 
 	getPrintButtonMarkup(){
-		var curStep = AssessmentStore.getStep();
+		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
+		var curStep = BaseStore.getStep();
 		if (curStep === Steps.keys.secondStep || curStep === Steps.keys.thirdStep){
 			return (
-				<a style={Styles} href={Config.url.createPath({action_name: 'createFile', pa_id: this.props.paId})}>
+				<a style={Styles} href={Config.url.createPath({action_name: this.props.printAction, pa_id: paId})}>
 					Распечатать бланк
 				</a>
 			);
@@ -59,9 +57,9 @@ var Buttons = React.createClass({
 	},
 
 	getMeetingButtonMarkup(){
-		var curStep = AssessmentStore.getStep();
-		var isReady = AssessmentStore.isReady();
-		var isBoss = AssessmentStore.isBoss();
+		var curStep = BaseStore.getStep();
+		var isReady = BaseStore.isReady();
+		var isBoss = BaseStore.isBoss();
 		if (!isReady && curStep === Steps.keys.secondStep && isBoss){
 			return (
 				<button onClick={this.handleCreateMeeting} style={Styles}>Назначить встречу</button>
@@ -72,8 +70,9 @@ var Buttons = React.createClass({
 
 	handleCreateMeeting(e){
 		var self = this;
+		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
 		e.preventDefault();
-		AssessmentActions.createMeeting(this.props.paId).then(function(data){
+		AssessmentActions.createMeeting(paId).then(function(data){
 			self._createMeeting(data.subject, data.attendees);
 			document.location.reload(true);
 		});
@@ -81,7 +80,7 @@ var Buttons = React.createClass({
 
 	render(){
 		return(
-			<div>
+			<div style={{padding: '3px', paddingBottom: '8px', 'backgroundColor': '#eee', textAlign: 'center'}}>
 				{this.getPrintButtonMarkup()}
 				{this.getMeetingButtonMarkup()}
 			</div>

@@ -11,4 +11,5 @@ module.exports = function(args){
 	this.blocks = this.blocks.map(function(b){
 		return new Block(b);
 	});
+	this.viewName = args.viewName || null;
 }

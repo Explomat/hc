@@ -1,59 +1,11 @@
 var React = require('react');
-var AssessmentStore = require('../stores/AssessmentStore');
 var Obj = require('../utils/object');
 var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
+var AssessmentClasses = require('../styles/AssessmentClasses');
+var Buttons = require('./Buttons');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
-var AssessmentClasses = {
-	assessmentContainer: {
-		percentAverage: {
-			display: 'none',
-
-			displayAverage: {
-				display:  'block'
-			}
-		},
-		blockContainer: {
-			marginTop: '24px',
-    		marginBottom: '24px',
-
-    		block: {
-				border: '1px solid #000',
-				borderCollapse: 'collapse',
-				width: '100%',
-
-				title: {
-					padding: '16px',
-					backgroundColor: '#dbdbdb',
-					marginBottom: '8px'
-				},
-
-				th: {
-					border: '1px solid #000',
-					padding: '5px'
-				},
-
-				description: {
-					padding: '5px',
-					color: 'red'
-				},
-
-				task: {
-					
-					td: {
-						border: '1px solid #000',
-						padding: '5px'
-					},
-
-					fact: {
-						backgroundColor: '#f1b9b2'
-					}
-				}
-			}
-		}
-	}
-}
 
 function getPercentComplete(fact, min, targ){
 	fact = Number(fact);
@@ -64,7 +16,7 @@ function getPercentComplete(fact, min, targ){
 		return 0;
 	}
 	var percent = ((fact - min) * 100) / (targ - min);
-	return percent > 100 ? 100 : percent;
+	return Math.round(percent > 100 ? 100 : percent);
 
 }
 
@@ -87,10 +39,6 @@ function getAllPercentComplete(tasks){
 	}))) / summWeight, 1);
 }
 
-
-function getState() {
-	return AssessmentStore.getData();
-}
 
 var Task = React.createClass({
 
@@ -169,21 +117,7 @@ var Block = React.createClass({
 
 var Assessment = React.createClass({
 
-	componentDidMount() {
-		AssessmentStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount() {
-		AssessmentStore.removeChangeListener(this._onChange);
-	},
-
-	getInitialState() {
-		return getState();
-	},
-
-	_onChange() {
-		this.setState(getState());
-	},
+	displayName: 'Assessment',
 
 	getAveragePercentComplete(_blocks){
 		var blocks = _blocks.filter(function(b){
@@ -197,7 +131,7 @@ var Assessment = React.createClass({
 	},
 
 	getCountBlocksWithTasks(){
-		var blocks = this.state.blocks;
+		var blocks = this.props.blocks;
 		return blocks.filter(function(b){
 			return b.tasks.length > 0
 		}).length;
@@ -208,11 +142,12 @@ var Assessment = React.createClass({
 																		Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage)
 		return (
 			<div>
-				{this.state.blocks.map(function(b, index){
+				<Buttons printAction={'createFile'} />
+				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
 				})}
 				<div style={percentAverageStyles}>
-					<h1>Средний процент выполнения по кварталам: {this.getAveragePercentComplete(this.state.blocks)}</h1>
+					<h1>Средний процент выполнения по кварталам: {this.getAveragePercentComplete(this.props.blocks)}</h1>
 				</div>
 			</div>
 		);

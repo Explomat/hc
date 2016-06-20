@@ -3,13 +3,15 @@ var routerId = '6251547620930508696';
 var customBaseUrl = '/custom_web_template.html';
 
 servers
-	.addServer('6296085442973733862')
+	.addServer('6298148414814771742')
 	.addActions(
 		[
 			'getData',
+			'saveData',
 			'createFile',
 			'createMeeting'
 		]);
+
 
 module.exports = {
 
@@ -36,8 +38,7 @@ module.exports = {
 	},
 
 	dom: {
-		appId: 'appId',
-		appButtonsId: 'appButtonsId'
+		appId: 'appId'
 	},
 
 	setCustomBaseUrl(_customBaseUrl){

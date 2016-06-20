@@ -1,7 +1,9 @@
+var UUID = require('../utils/UUID');
 
 module.exports = function(args){
 	args = args || {};
 	
+	this.uuid = UUID.generate();
 	this.title = args.title || '';
 	this.unit = args.unit || '';
 	this.weight = args.weight || '';
