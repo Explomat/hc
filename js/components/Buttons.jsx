@@ -46,7 +46,7 @@ var Buttons = React.createClass({
 	getPrintButtonMarkup(){
 		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
 		var curStep = BaseStore.getStep();
-		if (curStep === Steps.keys.secondStep || curStep === Steps.keys.thirdStep){
+		if (curStep !== Steps.keys.firstStep){
 			return (
 				<a style={Styles} href={Config.url.createPath({action_name: this.props.printAction, pa_id: paId})}>
 					Распечатать бланк
@@ -60,7 +60,7 @@ var Buttons = React.createClass({
 		var curStep = BaseStore.getStep();
 		var isReady = BaseStore.isReady();
 		var isBoss = BaseStore.isBoss();
-		if (!isReady && curStep === Steps.keys.secondStep && isBoss){
+		if (!isReady && (curStep === Steps.keys.fourthStep || curStep === Steps.keys.secondStep) && isBoss){
 			return (
 				<button onClick={this.handleCreateMeeting} style={Styles}>Назначить встречу</button>
 			);

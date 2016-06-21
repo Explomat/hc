@@ -4,6 +4,10 @@ var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
 var BaseActions = require('../actions/BaseActions');
+var ButtonsClasses = require('../styles/ButtonsClasses');
+var Steps = require('../utils/steps');
+var BaseStore = require('../stores/BaseStore');
+var Buttons = require('./Buttons');
 
 function getPercentComplete(fact, min, targ){
 	fact = Number(fact);
@@ -24,6 +28,46 @@ function getSummWeight(tasks){
 	}).reduce(function(first, second){
 		return first +  second;
 	})), 1);
+}
+
+function _isDisabledAll(step, isCollaborator, isBoss){
+	if (!isCollaborator && !isBoss){
+		return true;
+	}
+
+	if (step === Steps.keys.firstStep && !isCollaborator && isBoss) {
+		return true;
+	}
+	else if (step === Steps.keys.secondStep && isCollaborator && !isBoss) {
+		return true;
+	}
+	else if (step === Steps.keys.thirdStep || step === Steps.keys.fourthStep) {
+		return true;
+	}
+	else if (step === Steps.keys.fifthStep) {
+		return true
+	}
+	return false;
+}
+
+function _isDisabledFact(step, isCollaborator, isBoss){
+	if (!isCollaborator && !isBoss) {
+		return true;
+	}
+
+	if (step === Steps.keys.firstStep || step === Steps.keys.secondStep) {
+		return true;
+	}
+	else if (step === Steps.keys.thirdStep && isBoss) {
+		return true;
+	}
+	else if (step === Steps.keys.fourthStep && isCollaborator) {
+		return true;
+	}
+	else if (step === Steps.keys.fifthStep) {
+		return true
+	}
+	return false;
 }
 
 var Task = React.createClass({
@@ -81,38 +125,45 @@ var Task = React.createClass({
 	},
 
 	render(){
+		var step = BaseStore.getStep();
+		var isCollaborator = BaseStore.isCollaborator();
+		var isBoss = BaseStore.isBoss();
+		var isDisabledAll = _isDisabledAll(step, isCollaborator, isBoss);
+		var isDisabledFact = _isDisabledFact(step, isCollaborator, isBoss);
+
+		var block = AssessmentClasses.assessmentContainer.blockContainer.block;
 		var fact = this.props.fact;
 		var min = this.props.min;
 		var targ = this.props.targ;
-		var styles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td);
-		var inputStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td.input);
-		var factStyles = assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.fact), styles);
+		var styles = Obj.getScalarValues(block.task.td);
+		var inputStyles = Obj.getScalarValues(block.task.td.input);
+		var factStyles = assign(Obj.getScalarValues(block.task.fact), styles);
 		return(
 			<tr>
 				<td style={styles}>
-					<input type="text" onChange={this.handleChangeTitle} value={this.props.title} />
+					<input type="text" onChange={this.handleChangeTitle} value={this.props.title} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeUnit} type="text" value={this.props.unit} />
+					<input style={inputStyles} onChange={this.handleChangeUnit} type="text" value={this.props.unit} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeWeight} type="text" value={this.props.weight} />
+					<input style={inputStyles} onChange={this.handleChangeWeight} type="text" value={this.props.weight} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeMin} type="text" value={min} />
+					<input style={inputStyles} onChange={this.handleChangeMin} type="text" value={min} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeTarg} type="text" value={targ} />
+					<input style={inputStyles} onChange={this.handleChangeTarg} type="text" value={targ} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeMax} type="text" value={this.props.max} />
+					<input style={inputStyles} onChange={this.handleChangeMax} type="text" value={this.props.max} disabled={isDisabledAll}/>
 				</td>
 				<td style={factStyles}>
-					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} />
+					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledFact}/>
 				</td>
 				<td style={styles}>{getPercentComplete(fact, min, targ)}</td>
-				<td>
-					<button onClick={this.handleRemoveTask}>&times;</button>
+				<td style={styles}>
+					<button style={ButtonsClasses} onClick={this.handleRemoveTask} disabled={isDisabledAll}>&times;</button>
 				</td>
 			</tr>
 		);
@@ -126,11 +177,18 @@ var Block = React.createClass({
 	},
 
 	render(){
+		var step = BaseStore.getStep();
+		var isCollaborator = BaseStore.isCollaborator();
+		var isBoss = BaseStore.isBoss();
+		var isDisabledAddButton = _isDisabledAll(step, isCollaborator, isBoss);
+
 		var blockContainerStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer);
 		var titleStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.title);
 		var blockStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block);
 		var thStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.th);
 		var descriptionStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.description);
+		var tdButtonStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td.tdButton);
+		var buttonStyles = assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td.tdButton.button), ButtonsClasses);
 		return(
 			<div style={blockContainerStyles}>
 				<div style={titleStyles}>{this.props.title}</div>
@@ -160,8 +218,8 @@ var Block = React.createClass({
 							<td style={descriptionStyles}>Суммарный вес индивидуальных показателей</td>
 							<td></td>
 							<td>{getSummWeight(this.props.tasks)}%</td>
-							<td>
-								<button onClick={this.handleAddTask}>Добавить</button>
+							<td style={tdButtonStyles}>
+								<button style={buttonStyles} onClick={this.handleAddTask} disabled={isDisabledAddButton}>Добавить</button>
 							</td>
 						</tr>
 					</tbody>
@@ -176,13 +234,20 @@ var FifthAssessment = React.createClass({
 	displayName: 'FifthAssessment',
 
 	render() {
-		return (
-			<div>
-				{this.props.blocks.map(function(b, index){
-					return <Block key={index} {...b} />
-				})}
-			</div>
-		);
+		var isCollaborator = BaseStore.isCollaborator();
+		var step = BaseStore.getStep();
+
+		if (step !== Steps.keys.firstStep || (step === Steps.keys.firstStep && isCollaborator)){
+			return (
+				<div>
+					<Buttons printAction={'createFile'} />
+					{this.props.blocks.map(function(b, index){
+						return <Block key={index} {...b} />
+					})}
+				</div>
+			);
+		}
+		return null;
 	}
 });
 

@@ -123,6 +123,10 @@ var BaseStore = extend({}, EventEmitter.prototype, {
 		return _base.isBoss;
 	},
 
+	isCollaborator: function(){
+		return _base.isCollaborator;
+	},
+
 	emitChange: function() {
 		this.emit('change');
 	},

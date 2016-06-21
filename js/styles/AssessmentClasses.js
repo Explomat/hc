@@ -30,7 +30,8 @@ var AssessmentClasses = {
 
 				description: {
 					padding: '5px',
-					color: 'red'
+					color: 'red',
+					whiteSpace: 'nowrap'
 				},
 
 				task: {
@@ -41,6 +42,13 @@ var AssessmentClasses = {
 
 						input: {
 							width: '50px'
+						},
+						tdButton: {
+							width: '100%',
+
+							button: {
+								'float': 'right'
+							}
 						}
 					},
 
