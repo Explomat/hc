@@ -138,7 +138,7 @@ var Assessment = React.createClass({
 	},
 
 	render() {
-		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage.display) :
+		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage.displayAverage) :
 																		Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage)
 		return (
 			<div>
