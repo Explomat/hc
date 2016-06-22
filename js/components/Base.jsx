@@ -8,7 +8,6 @@ var FourthAssessment = require('./FourthAssessment');
 var FifthAssessment = require('./FifthAssessment');
 var UrlUtils = require('../utils/url');
 
-
 function getState() {
 	return BaseStore.getData();
 }
