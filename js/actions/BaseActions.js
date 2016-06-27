@@ -81,6 +81,14 @@ var BaseActions = {
 			taskId: taskId,
 			val: val
 		});
+	},
+	changeComment: function(blockId, taskId, val){
+		AppDispatcher.handleAction({
+			actionType: BaseConstants.CHANGE_COMMENT,
+			blockId: blockId,
+			taskId: taskId,
+			val: val
+		});
 	}
 }
 

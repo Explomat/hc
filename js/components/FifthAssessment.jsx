@@ -34,40 +34,28 @@ function _isDisabledAll(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss){
 		return true;
 	}
-
-	if (step === Steps.keys.firstStep && !isCollaborator && isBoss) {
-		return true;
+	if (step === Steps.keys.firstStep && isCollaborator){
+		return false;
 	}
-	else if (step === Steps.keys.secondStep && isCollaborator && !isBoss) {
-		return true;
+	else if (step === Steps.keys.secondStep && isBoss){
+		return false;
 	}
-	else if (step === Steps.keys.thirdStep || step === Steps.keys.fourthStep) {
-		return true;
-	}
-	else if (step === Steps.keys.fifthStep) {
-		return true
-	}
-	return false;
+	return true;
 }
 
-function _isDisabledFact(step, isCollaborator, isBoss){
+
+function _isDisabledTextarea(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss) {
 		return true;
 	}
 
-	if (step === Steps.keys.firstStep || step === Steps.keys.secondStep) {
+	if (step === Steps.keys.firstStep){
 		return true;
 	}
-	else if (step === Steps.keys.thirdStep && isBoss) {
-		return true;
+	else if(step === Steps.keys.secondStep && isBoss){
+		return false;
 	}
-	else if (step === Steps.keys.fourthStep && isCollaborator) {
-		return true;
-	}
-	else if (step === Steps.keys.fifthStep) {
-		return true
-	}
-	return false;
+	return true;
 }
 
 var Task = React.createClass({
@@ -124,20 +112,25 @@ var Task = React.createClass({
 		}
 	},
 
+	handleChangeComment(e){
+		BaseActions.changeComment(this.props.blockId, this.props.uuid, e.target.value);
+	},
+
 	render(){
 		var step = BaseStore.getStep();
 		var isCollaborator = BaseStore.isCollaborator();
 		var isBoss = BaseStore.isBoss();
 		var isDisabledAll = _isDisabledAll(step, isCollaborator, isBoss);
-		var isDisabledFact = _isDisabledFact(step, isCollaborator, isBoss);
+		var isDisabledTextarea = _isDisabledTextarea(step, isCollaborator, isBoss);
 
 		var block = AssessmentClasses.assessmentContainer.blockContainer.block;
-		var fact = this.props.fact;
+		var fact = ceil(this.props.fact, 1);
 		var min = this.props.min;
 		var targ = this.props.targ;
 		var styles = Obj.getScalarValues(block.task.td);
 		var inputStyles = Obj.getScalarValues(block.task.td.input);
 		var factStyles = assign(Obj.getScalarValues(block.task.fact), styles);
+		var textareaStyles = Obj.getScalarValues(block.task.textarea);
 		return(
 			<tr>
 				<td style={styles}>
@@ -159,9 +152,12 @@ var Task = React.createClass({
 					<input style={inputStyles} onChange={this.handleChangeMax} type="text" value={this.props.max} disabled={isDisabledAll}/>
 				</td>
 				<td style={factStyles}>
-					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledFact}/>
+					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>{getPercentComplete(fact, min, targ)}</td>
+				<td style={styles}>
+					<textarea style={textareaStyles} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
+				</td>
 				<td style={styles}>
 					<button style={ButtonsClasses} onClick={this.handleRemoveTask} disabled={isDisabledAll}>&times;</button>
 				</td>
@@ -203,6 +199,7 @@ var Block = React.createClass({
 							<th style={thStyles}>MAX</th>
 							<th style={thStyles}>ФАКТ</th>
 							<th style={thStyles}>% выполнения</th>
+							<th style={thStyles}>Комментарий</th>
 							<th style={thStyles}></th>
 						</tr>
 					</thead>

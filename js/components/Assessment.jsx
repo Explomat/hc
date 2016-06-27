@@ -43,7 +43,7 @@ function getAllPercentComplete(tasks){
 var Task = React.createClass({
 
 	render(){
-		var fact = this.props.fact;
+		var fact = ceil(this.props.fact, 1);
 		var min = this.props.min;
 		var targ = this.props.targ;
 		var styles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td);

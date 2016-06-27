@@ -105,6 +105,16 @@ function changeFact(blockId, taskId, val){
 	}
 }
 
+function changeComment(blockId, taskId, val){
+	var block = _findElem(_base.blocks, blockId);
+	if (block){
+		var task = _findElem(block.tasks, taskId)
+		if (task){
+			task.comment = val;
+		}
+	}
+}
+
 var BaseStore = extend({}, EventEmitter.prototype, {
 	
 	getData: function(){
@@ -175,6 +185,9 @@ BaseStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case BaseConstants.CHANGE_FACT:
 			changeFact(action.blockId, action.taskId, action.val);
+			break;
+		case BaseConstants.CHANGE_COMMENT:
+			changeComment(action.blockId, action.taskId, action.val);
 			break;
 		//---------------------------------------
 		default:

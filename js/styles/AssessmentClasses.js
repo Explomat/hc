@@ -54,6 +54,10 @@ var AssessmentClasses = {
 
 					fact: {
 						backgroundColor: '#f1b9b2'
+					},
+					textarea: {
+						resize:'none',
+						width: '120px'
 					}
 				}
 			}

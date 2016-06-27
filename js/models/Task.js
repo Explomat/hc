@@ -12,4 +12,5 @@ module.exports = function(args){
 	this.max = args.max || '';
 	this.fact = args.fact || '';
 	this.test = args.test || '';
+	this.comment = args.comment || '';
 }

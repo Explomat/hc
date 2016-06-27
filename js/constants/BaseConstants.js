@@ -10,5 +10,6 @@ module.exports = keyMirror({
 	CHANGE_MIN: null,
 	CHANGE_TARGET: null,
 	CHANGE_MAX: null,
-	CHANGE_FACT: null
+	CHANGE_FACT: null,
+	CHANGE_COMMENT: null
 });
