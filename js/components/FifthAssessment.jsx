@@ -43,6 +43,26 @@ function _isDisabledAll(step, isCollaborator, isBoss){
 	return true;
 }
 
+function _isDisabledFact(/*step, isCollaborator, isBoss*/){
+/*	if (!isCollaborator && !isBoss) {
+		return true;
+	}
+
+	if (step === Steps.keys.firstStep || step === Steps.keys.secondStep) {
+		return true;
+	}
+	else if (step === Steps.keys.thirdStep && isBoss) {
+		return true;
+	}
+	else if (step === Steps.keys.fourthStep && isCollaborator) {
+		return true;
+	}
+	else if (step === Steps.keys.fifthStep) {
+		return true
+	}*/
+	return true;
+}
+
 
 function _isDisabledTextarea(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss) {
@@ -121,6 +141,7 @@ var Task = React.createClass({
 		var isCollaborator = BaseStore.isCollaborator();
 		var isBoss = BaseStore.isBoss();
 		var isDisabledAll = _isDisabledAll(step, isCollaborator, isBoss);
+		var isDisabledFact = _isDisabledFact();
 		var isDisabledTextarea = _isDisabledTextarea(step, isCollaborator, isBoss);
 
 		var block = AssessmentClasses.assessmentContainer.blockContainer.block;
@@ -152,7 +173,7 @@ var Task = React.createClass({
 					<input style={inputStyles} onChange={this.handleChangeMax} type="text" value={this.props.max} disabled={isDisabledAll}/>
 				</td>
 				<td style={factStyles}>
-					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledAll}/>
+					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledFact}/>
 				</td>
 				<td style={styles}>{getPercentComplete(fact, min, targ)}</td>
 				<td style={styles}>
