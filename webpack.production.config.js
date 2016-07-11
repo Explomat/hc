@@ -8,7 +8,7 @@ module.exports = {
     },
     devtool: 'source-map',
     output: {
-        path: 'build',
+        path: '\\\\10.1.21.16\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\homecredit\\build',
         publicPath: '/build/',
         filename: 'js/bundle.js',
         library: '[name]'   
