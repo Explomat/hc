@@ -45,15 +45,12 @@ var Buttons = React.createClass({
 
 	getPrintButtonMarkup(){
 		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
-		var curStep = BaseStore.getStep();
-		if (curStep !== Steps.keys.firstStep){
-			return (
-				<a style={Styles} href={Config.url.createPath({action_name: this.props.printAction, pa_id: paId})}>
-					Распечатать бланк
-				</a>
-			);
-		}
-		return null;
+		//var curStep = BaseStore.getStep();
+		return (
+			<a style={Styles} href={Config.url.createPath({action_name: this.props.printAction, pa_id: paId})}>
+				Распечатать бланк
+			</a>
+		);
 	},
 
 	getMeetingButtonMarkup(){
