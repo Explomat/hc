@@ -8,6 +8,7 @@ var ButtonsClasses = require('../styles/ButtonsClasses');
 var Steps = require('../utils/steps');
 var BaseStore = require('../stores/BaseStore');
 var Buttons = require('./Buttons');
+var Config = require('../config');
 
 function getPercentComplete(fact, min, targ){
 	fact = Number(fact);
@@ -155,7 +156,7 @@ var Task = React.createClass({
 		return(
 			<tr>
 				<td style={styles}>
-					<input type="text" onChange={this.handleChangeTitle} value={this.props.title} disabled={isDisabledAll}/>
+					<textarea style={{rezize: 'none'}} onChange={this.handleChangeTitle} disabled={isDisabledAll} value={this.props.title}></textarea>
 				</td>
 				<td style={styles}>
 					<input style={inputStyles} onChange={this.handleChangeUnit} type="text" value={this.props.unit} disabled={isDisabledAll}/>
@@ -250,6 +251,18 @@ var Block = React.createClass({
 var FifthAssessment = React.createClass({
 
 	displayName: 'FifthAssessment',
+
+	_changeZonesStyles(){
+		var mainZone = document.getElementById(Config.dom.mainZoneId);
+		var rightZone = document.getElementById(Config.dom.rightZoneId);
+		mainZone.style.margin = '0px';
+		mainZone.style.width = '100%';
+		rightZone.style.display = 'none';
+	},
+
+	componentDidMount() {
+		this._changeZonesStyles();
+	},
 
 	render() {
 		var isCollaborator = BaseStore.isCollaborator();
