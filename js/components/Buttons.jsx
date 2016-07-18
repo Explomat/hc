@@ -59,7 +59,7 @@ var Buttons = React.createClass({
 		var isBoss = BaseStore.isBoss();
 		if (!isReady && (curStep === Steps.keys.fourthStep || curStep === Steps.keys.secondStep) && isBoss){
 			return (
-				<button onClick={this.handleCreateMeeting} style={Styles}>Назначить встречу</button>
+				<button onClick={this.handleCreateMeeting} style={Styles}>Назначить оценочную встречу</button>
 			);
 		}
 		return null;

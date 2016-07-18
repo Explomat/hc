@@ -146,7 +146,7 @@ var Task = React.createClass({
 		var isDisabledTextarea = _isDisabledTextarea(step, isCollaborator, isBoss);
 
 		var block = AssessmentClasses.assessmentContainer.blockContainer.block;
-		var fact = ceil(this.props.fact, 1);
+		var fact = this.props.fact ? ceil(this.props.fact, 1) : this.props.fact;
 		var min = this.props.min;
 		var targ = this.props.targ;
 		var styles = Obj.getScalarValues(block.task.td);

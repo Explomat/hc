@@ -11,7 +11,7 @@ var AssessmentClasses = {
 			marginTop: '24px',
     		marginBottom: '24px',
 
-    		block: {
+			block: {
 				border: '1px solid #000',
 				borderCollapse: 'collapse',
 				width: '100%',
@@ -59,8 +59,40 @@ var AssessmentClasses = {
 						resize:'none',
 						width: '120px'
 					}
+				},
+				testInfo: {
+					padding: '10px 0 10px 0',
+
+					description: {
+						display: 'none',
+
+						displayDescription: {
+							display: 'inline-block'
+						}
+					},
+					error: {
+						display: 'none',
+
+						displayError: {
+							display: 'inline-block'
+						}
+					},
+					showMonths: {
+						float: 'right',
+						color: '#077fcc',
+						cursor: 'pointer'
+					}
+				},
+				monthsData: {
+					display: 'none',
+
+					displayMonthsData: {
+						display: 'block',
+						backgroundColor: '#faf1ea',
+    					padding: '10px 20px 10px 20px'
+					}
 				}
-			}
+    		}
 		}
 	}
 }
