@@ -2,5 +2,5 @@ module.exports = function(args){
 	args = args || {};
 
 	this.position = args.position || '';
-	this.rating = args.raiting || '';
+	this.rating = args.rating || '';
 }

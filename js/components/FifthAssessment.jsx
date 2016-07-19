@@ -9,27 +9,7 @@ var Steps = require('../utils/steps');
 var BaseStore = require('../stores/BaseStore');
 var Buttons = require('./Buttons');
 var Config = require('../config');
-
-function getPercentComplete(fact, min, targ){
-	fact = Number(fact);
-	min = Number(min);
-	targ = Number(targ);
-
-	if (fact <= min) {
-		return 0;
-	}
-	var percent = ((fact - min) * 100) / (targ - min);
-	return Math.round(percent > 100 ? 100 : percent);
-
-}
-
-function getSummWeight(tasks){
-	return ceil(tasks.length === 0 ? 0 : (tasks.map(function(t){
-		return Number(t.weight);
-	}).reduce(function(first, second){
-		return first +  second;
-	})), 1);
-}
+var commonFuncs = require('../utils/commonFuncs');
 
 function _isDisabledAll(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss){
@@ -146,7 +126,7 @@ var Task = React.createClass({
 		var isDisabledTextarea = _isDisabledTextarea(step, isCollaborator, isBoss);
 
 		var block = AssessmentClasses.assessmentContainer.blockContainer.block;
-		var fact = this.props.fact ? ceil(this.props.fact, 1) : this.props.fact;
+		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
 		var min = this.props.min;
 		var targ = this.props.targ;
 		var styles = Obj.getScalarValues(block.task.td);
@@ -176,7 +156,7 @@ var Task = React.createClass({
 				<td style={factStyles}>
 					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledFact}/>
 				</td>
-				<td style={styles}>{getPercentComplete(fact, min, targ)}</td>
+				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ)}</td>
 				<td style={styles}>
 					<textarea style={textareaStyles} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
 				</td>
@@ -236,7 +216,7 @@ var Block = React.createClass({
 						<tr>
 							<td style={descriptionStyles}>Суммарный вес индивидуальных показателей</td>
 							<td></td>
-							<td>{getSummWeight(this.props.tasks)}%</td>
+							<td>{commonFuncs.getSummWeight(this.props.tasks)}%</td>
 							<td style={tdButtonStyles}>
 								<button style={buttonStyles} onClick={this.handleAddTask} disabled={isDisabledAddButton}>Добавить</button>
 							</td>
@@ -255,6 +235,9 @@ var FifthAssessment = React.createClass({
 	_changeZonesStyles(){
 		var mainZone = document.getElementById(Config.dom.mainZoneId);
 		var rightZone = document.getElementById(Config.dom.rightZoneId);
+		if (!mainZone || !rightZone){
+			return;
+		}
 		mainZone.style.margin = '0px';
 		mainZone.style.width = '100%';
 		rightZone.style.display = 'none';

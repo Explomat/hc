@@ -91,6 +91,31 @@ var AssessmentClasses = {
 						backgroundColor: '#faf1ea',
     					padding: '10px 20px 10px 20px'
 					}
+				},
+				tasksResult: {
+					paddingTop: '10px',
+
+					rating: {
+						marginLeft: '20px',
+
+						description: {
+							fontWeight: 'bold'
+						},
+
+						value: {
+							textDecoration: 'underline'
+						}
+					},
+					position: {
+
+						description: {
+							fontWeight: 'bold'
+						},
+
+						value: {
+							textDecoration: 'underline'
+						}
+					}
 				}
     		}
 		}

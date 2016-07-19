@@ -4,46 +4,14 @@ var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
 var Buttons = require('./Buttons');
+var commonFuncs = require('../utils/commonFuncs');
 //var AssessmentActions = require('../actions/AssessmentActions');
-
-
-function getPercentComplete(fact, min, targ){
-	fact = Number(fact);
-	min = Number(min);
-	targ = Number(targ);
-
-	if (fact <= min) {
-		return 0;
-	}
-	var percent = ((fact - min) * 100) / (targ - min);
-	return Math.round(percent > 100 ? 100 : percent);
-
-}
-
-function getSummWeight(tasks){
-	return ceil(tasks.length === 0 ? 0 : (tasks.map(function(t){
-		return Number(t.weight);
-	}).reduce(function(first, second){
-		return first +  second;
-	})), 1);
-}
-
-function getAllPercentComplete(tasks){
-	var summWeight = getSummWeight(tasks);
-
-	return ceil((tasks.length === 0 ? 0 : (tasks.map(function(t){
-		var percentComplete = getPercentComplete(t.fact, t.min, t.targ);
-		return Number(t.weight) * percentComplete;
-	}).reduce(function(first, second){
-		return first + second;
-	}))) / summWeight, 1);
-}
 
 
 var Task = React.createClass({
 
 	render(){
-		var fact = this.props.fact ? ceil(this.props.fact, 1) : this.props.fact;
+		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
 		var min = this.props.min;
 		var targ = this.props.targ;
 		var styles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td);
@@ -57,7 +25,7 @@ var Task = React.createClass({
 				<td style={styles}>{targ}</td>
 				<td style={styles}>{this.props.max}</td>
 				<td style={factStyles}>{fact}</td>
-				<td style={styles}>{getPercentComplete(fact, min, targ)}</td>
+				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ)}</td>
 			</tr>
 		);
 	}
@@ -101,12 +69,12 @@ var Block = React.createClass({
 						<tr>
 							<td style={descriptionStyles}>Суммарный вес индивидуальных показателей</td>
 							<td></td>
-							<td>{getSummWeight(this.props.tasks)}%</td>
+							<td>{commonFuncs.getSummWeight(this.props.tasks)}%</td>
 						</tr>
 						<tr>
 							<td style={descriptionStyles}>% выполнения</td>
 							<td></td>
-							<td>{getAllPercentComplete(this.props.tasks)}%</td>
+							<td>{commonFuncs.getAllPercentComplete(this.props.tasks)}%</td>
 						</tr>
 					</tbody>
 				</table>
@@ -125,7 +93,7 @@ var Assessment = React.createClass({
 		});
 		var percent = 0;
 		blocks.forEach(function(b){
-			percent += getAllPercentComplete(b.tasks);
+			percent += commonFuncs.getAllPercentComplete(b.tasks);
 		});
 		return ceil(percent / blocks.length, 1);
 	},
@@ -147,7 +115,7 @@ var Assessment = React.createClass({
 					return <Block key={index} {...b} />
 				})}
 				<div style={percentAverageStyles}>
-					<h1>Средний процент выполнения по кварталам: {this.getAveragePercentComplete(this.props.blocks)}</h1>
+					<h2>Средний процент выполнения по кварталам: {this.getAveragePercentComplete(this.props.blocks)}</h2>
 				</div>
 			</div>
 		);
