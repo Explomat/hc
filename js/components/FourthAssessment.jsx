@@ -4,7 +4,6 @@ var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
 var Buttons = require('./Buttons');
-var commonFuncs = require('../utils/commonFuncs');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
 var MonthBlock = React.createClass({
@@ -163,36 +162,13 @@ var FourthAssessment = React.createClass({
 
 	displayName: 'FourthAssessment',
 
-	getAveragePercentComplete(_blocks){
-		var blocks = _blocks.filter(function(b){
-			return b.tasks.length > 0
-		});
-		var percent = 0;
-		blocks.forEach(function(b){
-			percent += commonFuncs.getAllPercentComplete(b.tasks);
-		});
-		return ceil(percent / blocks.length, 1);
-	},
-
-	getCountBlocksWithTasks(){
-		var blocks = this.props.blocks;
-		return blocks.filter(function(b){
-			return b.tasks.length > 0
-		}).length;
-	},
-
 	render() {
-		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage.displayAverage) :
-																		Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage)
 		return (
 			<div>
 				<Buttons printAction={'createFile'} />
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
 				})}
-				<div style={percentAverageStyles}>
-					<h2>Средний процент выполнения по кварталам: {this.getAveragePercentComplete(this.props.blocks)}</h2>
-				</div>
 			</div>
 		);
 	}
