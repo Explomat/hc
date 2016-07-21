@@ -2,7 +2,8 @@
   "extends": "eslint:recommended",
   "parser": "babel-eslint",
   "globals": {
-      "ActiveXObject": true
+      "ActiveXObject": true,
+      "$": true
   },
   "env": {
     "browser": true,

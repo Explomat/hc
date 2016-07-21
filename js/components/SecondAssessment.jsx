@@ -106,8 +106,9 @@ var SecondAssessment = React.createClass({
 	},
 
 	render() {
-		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage.displayAverage) :
-																		Obj.getScalarValues(AssessmentClasses.assessmentContainer.percentAverage)
+		var percentAverage = AssessmentClasses.assessmentContainer.percentAverage;
+		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(percentAverage.displayAverage) :
+																		Obj.getScalarValues(percentAverage);
 		return (
 			<div>
 				<Buttons printAction={'createFile'} />
@@ -115,7 +116,7 @@ var SecondAssessment = React.createClass({
 					return <Block key={index} {...b} />
 				})}
 				<div style={percentAverageStyles}>
-					<h2>Средний процент выполнения по полугодиям: {this.getAveragePercentComplete(this.props.blocks)}</h2>
+					<h3>Средний процент выполнения по полугодиям: {this.getAveragePercentComplete(this.props.blocks)}</h3>
 				</div>
 			</div>
 		);

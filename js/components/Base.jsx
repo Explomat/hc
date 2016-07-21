@@ -1,12 +1,11 @@
 var React = require('react');
 var BaseStore = require('../stores/BaseStore');
-var BaseActions = require('../actions/BaseActions');
+var Steps = require('../utils/steps');
 var Assessment = require('./Assessment');
 var SecondAssessment = require('./SecondAssessment');
 var ThirdAssessment = require('./ThirdAssessment');
 var FourthAssessment = require('./FourthAssessment');
 var FifthAssessment = require('./FifthAssessment');
-var UrlUtils = require('../utils/url');
 
 function getState() {
 	return BaseStore.getData();
@@ -16,15 +15,12 @@ var Base = React.createClass({
 
 	componentDidMount() {
 		BaseStore.addChangeListener(this._onChange);
-		var container = document.getElementsByClassName('WTCSS-comp-body')[0];
-		var button = container.querySelector('div.ass-button-container > input');
-		if (button){
-			button.addEventListener('click', function(){
-				var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
-				BaseActions.saveData(BaseStore.getData(), paId);
-			})
-		}
-		
+		$('#f_switch').submit(function (evt) {
+			if (!BaseStore.isReady() && BaseStore.getStep() === Steps.keys.secondStep){
+				alert('Перед проставлением оценок Вам необходимо провести оценочную встречу. Для этого в бланке нажмите "Назначить оценочную встречу"');
+				evt.preventDefault();
+			}
+		});
 	},
 
 	componentWillUnmount() {

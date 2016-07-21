@@ -102,6 +102,7 @@ var Block = React.createClass({
 		//var tableContainerStyles = Obj.getScalarValues(blockContainer.block.tableContainer);
 		var blockStyles = Obj.getScalarValues(blockContainer.block);
 		var thStyles = Obj.getScalarValues(blockContainer.block.th);
+		var tdStyles = Obj.getScalarValues(blockContainer.block.task.td);
 		//var descriptionStyles = Obj.getScalarValues(blockContainer.block.description);
 		var testInfoStyles = Obj.getScalarValues(blockContainer.block.testInfo);
 		var testInfoDescriptionStyles = !testInfo.error ? Obj.getScalarValues(blockContainer.block.testInfo.description.displayDescription) : Obj.getScalarValues(blockContainer.block.testInfo.description);
@@ -143,7 +144,22 @@ var Block = React.createClass({
 				</div>
 				<div>
 					<div style={testInfoStyles}>
-						<span style={testInfoDescriptionStyles}>{testInfo.name}: {testInfo.score}</span>
+						<table style={testInfoDescriptionStyles}>
+							<thead>
+								<tr>
+									<th style={thStyles}>Название</th>
+									<th style={thStyles}>Результат</th>
+									<th style={thStyles}>Статус</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style={tdStyles}>{testInfo.name}</td>
+									<td style={tdStyles}>{testInfo.score}</td>
+									<td style={tdStyles}>{testInfo.state}</td>
+								</tr>
+							</tbody>
+						</table>
 						<span style={testInfoErrorStyles}>{testInfo.error}</span>
 						{this.getToggleMonthsButtonMarkup()}
 					</div>

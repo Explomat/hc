@@ -1,15 +1,16 @@
 var React = require('react');
+var BaseStore = require('../stores/BaseStore');
+var BaseActions = require('../actions/BaseActions');
 var Obj = require('../utils/object');
 var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
-var BaseActions = require('../actions/BaseActions');
 var ButtonsClasses = require('../styles/ButtonsClasses');
 var Steps = require('../utils/steps');
-var BaseStore = require('../stores/BaseStore');
 var Buttons = require('./Buttons');
 var Config = require('../config');
 var commonFuncs = require('../utils/commonFuncs');
+var UrlUtils = require('../utils/url');
 
 function _isDisabledAll(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss){
@@ -245,6 +246,15 @@ var FifthAssessment = React.createClass({
 
 	componentDidMount() {
 		this._changeZonesStyles();
+
+		var container = document.getElementsByClassName('WTCSS-comp-body')[0];
+		var button = container.querySelector('div.ass-button-container > input');
+		if (button){
+			button.addEventListener('click', function(){
+				var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
+				BaseActions.saveData(BaseStore.getData(), paId);
+			})
+		}
 	},
 
 	render() {

@@ -19,7 +19,9 @@ var AssessmentClasses = {
 				title: {
 					padding: '16px',
 					backgroundColor: '#dbdbdb',
-					marginBottom: '8px'
+					marginBottom: '8px',
+					fontSize: '12px',
+    				fontWeight: 'bold'
 				},
 
 				th: {
@@ -67,7 +69,8 @@ var AssessmentClasses = {
 						display: 'none',
 
 						displayDescription: {
-							display: 'inline-block'
+							display: 'inline-block',
+							borderCollapse: 'collapse'
 						}
 					},
 					error: {
