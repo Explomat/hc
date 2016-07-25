@@ -137,7 +137,7 @@ var Task = React.createClass({
 		return(
 			<tr>
 				<td style={styles}>
-					<textarea style={{rezize: 'none'}} onChange={this.handleChangeTitle} disabled={isDisabledAll} value={this.props.title}></textarea>
+					<textarea style={{resize: 'none'}} rows={4} onChange={this.handleChangeTitle} disabled={isDisabledAll} value={this.props.title}></textarea>
 				</td>
 				<td style={styles}>
 					<input style={inputStyles} onChange={this.handleChangeUnit} type="text" value={this.props.unit} disabled={isDisabledAll}/>
@@ -159,7 +159,7 @@ var Task = React.createClass({
 				</td>
 				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ)}</td>
 				<td style={styles}>
-					<textarea style={textareaStyles} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
+					<textarea style={textareaStyles} rows={4} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
 				</td>
 				<td style={styles}>
 					<button style={ButtonsClasses} onClick={this.handleRemoveTask} disabled={isDisabledAll}>&times;</button>

@@ -13,14 +13,26 @@ function getState() {
 
 var Base = React.createClass({
 
-	componentDidMount() {
-		BaseStore.addChangeListener(this._onChange);
+	_changeAssessmentCollName(){
+		var elems= document.getElementsByClassName('th-ass_mark');
+		if (elems.length > 0 && BaseStore.getStep() === Steps.keys.firstStep){
+			elems[0].textContent = 'Моя оценка';
+		}
+	},
+
+	_preventFormSubmit(){
 		$('#f_switch').submit(function (evt) {
 			if (!BaseStore.isReady() && BaseStore.getStep() === Steps.keys.secondStep){
 				alert('Перед проставлением оценок Вам необходимо провести оценочную встречу. Для этого в бланке нажмите "Назначить оценочную встречу"');
 				evt.preventDefault();
 			}
 		});
+	},
+
+	componentDidMount() {
+		BaseStore.addChangeListener(this._onChange);
+		this._preventFormSubmit();
+		this._changeAssessmentCollName();
 	},
 
 	componentWillUnmount() {
