@@ -43,7 +43,8 @@ var AssessmentClasses = {
 						padding: '5px',
 
 						input: {
-							width: '50px'
+							width: '50px',
+							outline: 'none'
 						},
 						tdButton: {
 							width: '100%',

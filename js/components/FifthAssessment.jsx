@@ -80,39 +80,24 @@ var Task = React.createClass({
 		BaseActions.changeUnit(this.props.blockId, this.props.uuid, val);
 	},
 
-	handleChangeWeight(e){
-		var val = e.target.value;
-		if (this._isNumberOrReal(val)){
-			BaseActions.changeWeight(this.props.blockId, this.props.uuid, e.target.value);
-		}
+	handleChangeWeight(val){
+		BaseActions.changeWeight(this.props.blockId, this.props.uuid, val);
 	},
 
-	handleChangeMin(e){
-		var val = e.target.value;
-		if (this._isNumberOrReal(val)){
-			BaseActions.changeMin(this.props.blockId, this.props.uuid, e.target.value);
-		}
+	handleChangeMin(val){
+		BaseActions.changeMin(this.props.blockId, this.props.uuid, val);
 	},
 
-	handleChangeTarg(e){
-		var val = e.target.value;
-		if (this._isNumberOrReal(val)){
-			BaseActions.changeTarg(this.props.blockId, this.props.uuid, e.target.value);
-		}
+	handleChangeTarg(val){
+		BaseActions.changeTarg(this.props.blockId, this.props.uuid,val);
 	},
 
-	handleChangeMax(e){
-		var val = e.target.value;
-		if (this._isNumberOrReal(val)){
-			BaseActions.changeMax(this.props.blockId, this.props.uuid, e.target.value);
-		}
+	handleChangeMax(val){
+		BaseActions.changeMax(this.props.blockId, this.props.uuid, val);
 	},
 
-	handleChangeFact(e){
-		var val = e.target.value;
-		if (this._isNumber(val)){
-			BaseActions.changeFact(this.props.blockId, this.props.uuid, e.target.value);
-		}
+	handleChangeFact(val){
+		BaseActions.changeFact(this.props.blockId, this.props.uuid, val);
 	},
 
 	handleChangeComment(e){
@@ -145,19 +130,19 @@ var Task = React.createClass({
 					<input style={inputStyles} onChange={this.handleChangeUnit} type="text" value={this.props.unit} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeWeight} type="text" value={this.props.weight} disabled={isDisabledAll}/>
+					<TextView onBlur={this.handleChangeWeight} isValid={this._isNumberOrReal} style={inputStyles} value={this.props.weight} disabled={isDisabledAll} />
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeMin} type="text" value={min} disabled={isDisabledAll}/>
+					<TextView onBlur={this.handleChangeMin} isValid={this._isNumberOrReal} style={inputStyles} value={min} disabled={isDisabledAll} />
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeTarg} type="text" value={targ} disabled={isDisabledAll}/>
+					<TextView onBlur={this.handleChangeTarg} isValid={this._isNumberOrReal} style={inputStyles} value={targ} disabled={isDisabledAll} />
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeMax} type="text" value={max} disabled={isDisabledAll}/>
+					<TextView onBlur={this.handleChangeMax} isValid={this._isNumberOrReal} style={inputStyles} value={max} disabled={isDisabledAll} />
 				</td>
 				<td style={factStyles}>
-					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledFact}/>
+					<TextView onBlur={this.handleChangeFact} isValid={this._isNumberOrReal} style={inputStyles} value={fact} disabled={isDisabledFact} />
 				</td>
 				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ, max)}</td>
 				<td style={styles}>

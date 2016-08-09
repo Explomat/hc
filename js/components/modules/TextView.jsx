@@ -1,28 +1,29 @@
 var React = require('react');
+var assign = require('lodash/assign');
 
-var TextView = {
+var TextView = React.createClass({
 
 	propTypes: {
-		className: React.PropTypes.string,
-		inputClassName: React.PropTypes.string,
+		style: React.PropTypes.object,
+		disabled: React.PropTypes.bool,
 		focused: React.PropTypes.bool,
 		onChange: React.PropTypes.func, 
 		onBlur: React.PropTypes.func,
 		onClick: React.PropTypes.func,
-		isValid: React.PropTypes.func,
-		notValidClass: React.PropTypes.string,
-		readOnly: React.PropTypes.bool
+		isValid: React.PropTypes.func
 	},
 
 	getDefaultProps: function() {
 		return {
 			value: '',
-			placeholder: '',
-			notValidClass: 'input-box__input--not-valid',
+			style: {},
+			notValidStyle: {
+				border: '2px solid #ff5252'
+			},
 			isValid: function() {
 				return true;
 			},
-			readOnly: false
+			disabled: false
 		}
 	},
 
@@ -46,10 +47,10 @@ var TextView = {
 
 	handleChange: function(e) {
 		if (!this.props.isValid(e.target.value)) {
-			e.target.classList.add(this.props.notValidClass);
+			e.target.style = 'border: 2px solid #ff5252; width: 50px; outline: none;';
 		}
 		else {
-			e.target.classList.remove(this.props.notValidClass);
+			e.target.style = 'width: 50px; outline: none;';
 		}
 		var val = e.target.value;
 		this.setState({value: e.target.value});
@@ -62,7 +63,7 @@ var TextView = {
 		var val = e.target.value;
 		if (!this.props.isValid(e.target.value)) {
 			this.setState({value: this.props.value});
-			e.target.classList.remove(this.props.notValidClass);
+			e.target.style = 'width: 50px; outline: none;';
 			val = this.props.value;
 		}
 
@@ -71,22 +72,20 @@ var TextView = {
 	},
 
 	render: function() {
-		var isValidStyle = !this.props.isValid(this.state.value) ? "borderBottom: '2px solid #ff5252;'" : '';
-		var inputClassName = this.props.inputClassName ? this.props.inputClassName : '';
+		var styles = !this.props.isValid(this.state.value) ? assign(this.props.style, this.props.notValidStyle) : this.props.style;
 		return (
 			<input 
-				style={{isValidStyle}}
+				style={styles}
 				ref="inpt" 
 				type="text" 
 				value={this.state.value} 
-				className={inputClassName} 
 				onChange={this.handleChange} 
 				onBlur={this.handleBlur} 
 				onClick={this.props.onClick}
-				readOnly={this.props.readOnly}/>
+				disabled={this.props.disabled}/>
 
 		);
 	}
-}
+});
 
 module.exports = TextView;
