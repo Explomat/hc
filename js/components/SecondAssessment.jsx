@@ -14,6 +14,7 @@ var Task = React.createClass({
 		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
 		var min = this.props.min;
 		var targ = this.props.targ;
+		var max = this.props.max;
 		var styles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td);
 		var factStyles = assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.fact), styles);
 		return(
@@ -23,9 +24,9 @@ var Task = React.createClass({
 				<td style={styles}>{this.props.weight}</td>
 				<td style={styles}>{min}</td>
 				<td style={styles}>{targ}</td>
-				<td style={styles}>{this.props.max}</td>
+				<td style={styles}>{max}</td>
 				<td style={factStyles}>{fact}</td>
-				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ)}</td>
+				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ, max)}</td>
 			</tr>
 		);
 	}

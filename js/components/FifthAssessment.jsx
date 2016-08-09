@@ -11,6 +11,7 @@ var Buttons = require('./Buttons');
 var Config = require('../config');
 var commonFuncs = require('../utils/commonFuncs');
 var UrlUtils = require('../utils/url');
+var TextView = require('./modules/TextView'); 
 
 function _isDisabledAll(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss){
@@ -62,8 +63,8 @@ function _isDisabledTextarea(step, isCollaborator, isBoss){
 
 var Task = React.createClass({
 
-	_isNumber(val){
-		 return /^(\d+)?$/.test(val);
+	_isNumberOrReal(val){
+		 return /^[+-]?([0-9]{1,}(\d+)?|[0-9]{1,}\.(\d+))$/.test(val) || val === '';
 	},
 
 	handleRemoveTask(){
@@ -81,28 +82,28 @@ var Task = React.createClass({
 
 	handleChangeWeight(e){
 		var val = e.target.value;
-		if (this._isNumber(val)){
+		if (this._isNumberOrReal(val)){
 			BaseActions.changeWeight(this.props.blockId, this.props.uuid, e.target.value);
 		}
 	},
 
 	handleChangeMin(e){
 		var val = e.target.value;
-		if (this._isNumber(val)){
+		if (this._isNumberOrReal(val)){
 			BaseActions.changeMin(this.props.blockId, this.props.uuid, e.target.value);
 		}
 	},
 
 	handleChangeTarg(e){
 		var val = e.target.value;
-		if (this._isNumber(val)){
+		if (this._isNumberOrReal(val)){
 			BaseActions.changeTarg(this.props.blockId, this.props.uuid, e.target.value);
 		}
 	},
 
 	handleChangeMax(e){
 		var val = e.target.value;
-		if (this._isNumber(val)){
+		if (this._isNumberOrReal(val)){
 			BaseActions.changeMax(this.props.blockId, this.props.uuid, e.target.value);
 		}
 	},
@@ -130,6 +131,7 @@ var Task = React.createClass({
 		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
 		var min = this.props.min;
 		var targ = this.props.targ;
+		var max = this.props.max;
 		var styles = Obj.getScalarValues(block.task.td);
 		var inputStyles = Obj.getScalarValues(block.task.td.input);
 		var factStyles = assign(Obj.getScalarValues(block.task.fact), styles);
@@ -152,12 +154,12 @@ var Task = React.createClass({
 					<input style={inputStyles} onChange={this.handleChangeTarg} type="text" value={targ} disabled={isDisabledAll}/>
 				</td>
 				<td style={styles}>
-					<input style={inputStyles} onChange={this.handleChangeMax} type="text" value={this.props.max} disabled={isDisabledAll}/>
+					<input style={inputStyles} onChange={this.handleChangeMax} type="text" value={max} disabled={isDisabledAll}/>
 				</td>
 				<td style={factStyles}>
 					<input style={inputStyles} onChange={this.handleChangeFact} type="text" value={fact} disabled={isDisabledFact}/>
 				</td>
-				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ)}</td>
+				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ, max)}</td>
 				<td style={styles}>
 					<textarea style={textareaStyles} rows={4} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
 				</td>
