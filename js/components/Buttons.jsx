@@ -16,7 +16,7 @@ var Buttons = React.createClass({
 
 	_createMeeting(subject, attendees){
 		if (!("ActiveXObject" in window) || !subject || !attendees) {
-			return;
+			return false;
 		}
 
 	    var olAppointmentItem = 1;
@@ -33,7 +33,7 @@ var Buttons = React.createClass({
 
 		objAppt = null;
 		objOL = null;
-
+		return true;
 	},
 
 	getDefaultProps(){
@@ -70,7 +70,9 @@ var Buttons = React.createClass({
 		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
 		e.preventDefault();
 		AssessmentActions.createMeeting(paId).then(function(data){
-			self._createMeeting(data.subject, data.attendees);
+			if (!self._createMeeting(data.subject, data.attendees)) {
+				alert("Откройте Outlook и назначьте встречу по оценке в удобное для Вас время.");
+			}
 			document.location.reload(true);
 		});
 	},
