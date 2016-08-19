@@ -22,8 +22,14 @@ var Buttons = React.createClass({
 	    var olAppointmentItem = 1;
 	    var olMeeting = 1;
 
-		var objOL = new ActiveXObject("Outlook.Application");
-		var objAppt = objOL.CreateItem(olAppointmentItem);
+	    try {
+	    	var objOL = new ActiveXObject("Outlook.Application");
+			var objAppt = objOL.CreateItem(olAppointmentItem);
+	    }
+	    catch(e){
+	    	return false;
+	    }
+		
 		objAppt.Subject = subject;
 		// make it a meeting request;
 		objAppt.MeetingStatus = olMeeting;

@@ -18,74 +18,75 @@ var ceil = require('lodash/ceil');
 }*/
 
 function getPercentComplete(fact, min, targ, max){
-	if (fact === ''){
-		return 0;
-	}
+  if (fact === ''){
+    return 0;
+  }
 
-	var percent = 0;
+  var percent = 0;
 
-	if (min == '') min = 0;
-	if (targ == '') targ = 0;
-	if (max == '') max = 0;
+  fact = parseFloat(fact);
+  min = parseFloat(min);
+  targ = parseFloat(targ);
+  max = parseFloat(max);
 
-	fact = Number(fact);
-	min = Number(min);
-	targ = Number(targ);
-	max = Number(max);
+  fact = isNaN(fact) ? '' : fact;
+  min = isNaN(min) ? '' : min;
+  targ = isNaN(targ) ? '' : targ;
+  max = isNaN(max) ? '' : max;
 
-	if (min == 0 && max == 0 && targ != 0){
-	  percent = fact == targ ? 1 : 0;
-	}
-	else {
+  if (min === '' && max === '' && targ !== ''){
+    percent = fact == targ ? 1 : 0;
+  }
+  else {
 
-	  if (min == targ || min == 0) {
-	    if (max > targ) {
-	      percent = fact < targ ? 0 : 1;
-	    }
-	    else {
-	      percent = fact > targ ? 0 : 1;
-	    }
-	  }
-	  else {
-	    if (max == targ || max == 0){
-	      if (min < targ){
-	        if (fact <= min){
-	          percent = 0;
-	        }
-	        else {
-	          percent = fact < targ ? (fact - min) / (targ - min) : 1;
-	        }
-	      }
-	      else {
-	        if (fact >= min){
-	          percent = 0;
-	        }
-	        else {
-	          percent = fact > targ ? (fact - min) / (targ - min) : 1;
-	        }
-	      }
-	    }
-	    else {
-	      if (min < max){
-	        if (fact <= min) {
-	          percent = 0;
-	        }
-	        else {
-	          percent = fact <= targ ? (fact - min)/(targ - min) : 1;
-	        }
-	      }
-	      else {
-	        if (fact >= min){
-	          percent = 0;
-	        }
-	        else{
-	          percent = fact >= targ ? (fact - min)/(targ - min) : 1;
-	        }
-	      }
-	    }
-	  }
-	}
-  	return Math.round(percent * 100);
+    if (min == targ || min === '') {
+      if (max > targ) {
+        percent = fact < targ ? 0 : 1;
+      }
+      else {
+        percent = fact > targ ? 0 : 1;
+      }
+    }
+    else {
+      if (max == targ || max === ''){
+        if (min < targ){
+          if (fact <= min){
+            percent = 0;
+          }
+          else {
+            percent = fact < targ ? (fact - min) / (targ - min) : 1;
+          }
+        }
+        else {
+          if (fact >= min){
+            percent = 0;
+          }
+          else {
+            percent = fact > targ ? (fact - min) / (targ - min) : 1;
+          }
+        }
+      }
+      else {
+        if (min < max){
+          if (fact <= min) {
+            percent = 0;
+          }
+          else {
+            percent = fact <= targ ? (fact - min)/(targ - min) : 1;
+          }
+        }
+        else {
+          if (fact >= min){
+            percent = 0;
+          }
+          else{
+            percent = fact >= targ ? (fact - min)/(targ - min) : 1;
+          }
+        }
+      }
+    }
+  }
+  return Math.round(percent * 100);
 }
 
 function getSummWeight(tasks){
