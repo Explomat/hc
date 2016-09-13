@@ -11,7 +11,7 @@ var BaseActions = {
 		});
 	},
 	saveData: function(data, paId){
-		BaseAPI.saveData(data, paId);
+		return BaseAPI.saveData(data, paId);
 	},
 	removeTask: function(blockId, uuid){
 		AppDispatcher.handleAction({
@@ -89,9 +89,6 @@ var BaseActions = {
 			taskId: taskId,
 			val: val
 		});
-	},
-	logError: function(err){
-		BaseAPI.logError(err);
 	}
 }
 

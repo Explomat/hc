@@ -231,17 +231,32 @@ var FifthAssessment = React.createClass({
 		rightZone.style.display = 'none';
 	},
 
-	componentDidMount() {
-		this._changeZonesStyles();
-
-		var container = document.getElementsByClassName('WTCSS-comp-body')[0];
+	_saveDataBeforeSubmit(){
+		var self = this;
+		$('#f_switch').submit(function (e) {
+			if (!self._isSaved){
+				e.preventDefault();
+				var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
+				BaseActions.saveData(BaseStore.getData(), paId).then(function(){
+					self._isSaved = true;
+					$('#f_switch').submit();
+				})
+			}
+		});
+		/*var container = document.getElementsByClassName('WTCSS-comp-body')[0];
 		var button = container.querySelector('div.ass-button-container > input');
 		if (button){
 			button.addEventListener('click', function(){
 				var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
 				BaseActions.saveData(BaseStore.getData(), paId);
 			})
-		}
+		}*/
+	},
+
+	componentDidMount() {
+		this._isSaved = false;
+		this._changeZonesStyles();
+		this._saveDataBeforeSubmit();
 	},
 
 	render() {
