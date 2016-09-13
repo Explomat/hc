@@ -89,6 +89,9 @@ var BaseActions = {
 			taskId: taskId,
 			val: val
 		});
+	},
+	logError: function(err){
+		BaseAPI.logError(err);
 	}
 }
 

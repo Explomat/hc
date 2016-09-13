@@ -8,6 +8,7 @@ servers
 		[
 			'getData',
 			'saveData',
+			'logError',
 			'createFile',
 			'createMeeting'
 		]);

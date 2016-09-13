@@ -24,5 +24,9 @@ module.exports = {
 
 	saveData: function(data, paId){
 		Ajax.sendRequest(Config.url.createPath({action_name: 'saveData', pa_id: paId}), JSON.stringify(data), false, true, null, 'POST');
+	},
+
+	logError: function(err){
+		Ajax.sendRequest(Config.url.createPath({action_name: 'logError', error: err}), null, false);
 	}
 }
