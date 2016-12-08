@@ -3,8 +3,10 @@
   "description": "Events",
   "author": "Matveev Savva",
   "scripts": {
-    "development": "webpack --config webpack.config.js",
-    "production": "webpack --config webpack.production.config.js"
+    "set-prod": "set NODE_ENV=production && node environment.js > src/env.js",
+    "set-dev": "set NODE_ENV=development && node environment.js > src/env.js",
+    "development": "npm run set-dev && webpack --config webpack.config.js",
+    "production": "npm run set-prod && webpack --config webpack.production.config.js"
   },
   "dependencies": {
     "classnames": "^2.2.3",
