@@ -11,7 +11,9 @@ var Buttons = require('./Buttons');
 var Config = require('../config');
 var commonFuncs = require('../utils/commonFuncs');
 var UrlUtils = require('../utils/url');
-var TextView = require('./modules/TextView'); 
+var TextView = require('./modules/TextView');
+var BossInstruction = require('./instructions/BossInstruction');
+var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
 
 function _isDisabledAll(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss){
@@ -260,6 +262,7 @@ var FifthAssessment = React.createClass({
 	},
 
 	render() {
+		var isBoss = BaseStore.isBoss();
 		var isCollaborator = BaseStore.isCollaborator();
 		var step = BaseStore.getStep();
 
@@ -267,6 +270,8 @@ var FifthAssessment = React.createClass({
 			return (
 				<div>
 					<Buttons printAction={'createFile'} />
+					{(isBoss && !isCollaborator) && <BossInstruction />}
+					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
 					{this.props.blocks.map(function(b, index){
 						return <Block key={index} {...b} />
 					})}

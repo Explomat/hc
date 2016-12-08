@@ -5,6 +5,11 @@ var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
 var Buttons = require('./Buttons');
 var commonFuncs = require('../utils/commonFuncs');
+var Portal = require('./modules/portal');
+var BaseStore = require('../stores/BaseStore');
+
+var BossInstruction = require('./instructions/BossInstruction');
+var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
 
@@ -107,12 +112,18 @@ var SecondAssessment = React.createClass({
 	},
 
 	render() {
+		var isBoss = BaseStore.isBoss();
+		var isCollaborator = BaseStore.isCollaborator();
 		var percentAverage = AssessmentClasses.assessmentContainer.percentAverage;
 		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(percentAverage.displayAverage) :
 																		Obj.getScalarValues(percentAverage);
 		return (
 			<div>
 				<Buttons printAction={'createFile'} />
+				<Portal nodeId="wt-zone-right">
+					{(isBoss && !isCollaborator) && <BossInstruction />}
+					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
+				</Portal>
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
 				})}

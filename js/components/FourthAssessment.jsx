@@ -4,6 +4,11 @@ var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
 var Buttons = require('./Buttons');
+var Portal = require('./modules/portal');
+var BaseStore = require('../stores/BaseStore');
+
+var BossInstruction = require('./instructions/BossInstruction');
+var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
 var MonthBlock = React.createClass({
@@ -179,9 +184,15 @@ var FourthAssessment = React.createClass({
 	displayName: 'FourthAssessment',
 
 	render() {
+		var isBoss = BaseStore.isBoss();
+		var isCollaborator = BaseStore.isCollaborator();
 		return (
 			<div>
 				<Buttons printAction={'createFile'} />
+				<Portal nodeId="wt-zone-left">
+					{(isBoss && !isCollaborator) && <BossInstruction />}
+					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
+				</Portal>
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
 				})}
