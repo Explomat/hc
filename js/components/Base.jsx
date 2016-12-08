@@ -21,15 +21,25 @@ var Base = React.createClass({
 	},
 
 	_preventFormSubmit(){
+		var self = this;
 		$('#f_switch').submit(function (evt) {
-			if (!BaseStore.isReady() && BaseStore.getStep() === Steps.keys.secondStep){
+			var isReady = BaseStore.isReady();
+			var curStep = BaseStore.getStep();
+			if (!isReady && curStep === Steps.keys.secondStep){
 				alert('Перед проставлением оценок Вам необходимо провести оценочную встречу. Для этого в бланке нажмите "Назначить оценочную встречу"');
 				evt.preventDefault();
+			}
+			else if (isReady && curStep === Steps.keys.secondStep) {
+				if (!self._isSaved){
+					self._isSaved = true;
+					alert("После сохранения бланка и проведения оценочной встречи со своим сотрудником обязательно завершите процедуру оценки, нажатием кнопки «Завершить оценку».");
+				}
 			}
 		});
 	},
 
 	componentDidMount() {
+		this._isSaved = false;
 		BaseStore.addChangeListener(this._onChange);
 		this._preventFormSubmit();
 		this._changeAssessmentCollName();

@@ -25,8 +25,9 @@ module.exports = {
             try { xmlHttp = new ActiveXObject("Microsoft.XMLHTTP"); }
             catch (err) { xmlHttp = false; }
         }
-        if (!xmlHttp && typeof(XMLHttpRequest) != 'undefined')
+        if (!xmlHttp && typeof(XMLHttpRequest) != 'undefined'){
             xmlHttp = new XMLHttpRequest();
+        }
         //xmlHttp.withCredentials = true;
         return xmlHttp;
     },

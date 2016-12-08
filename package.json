@@ -3,8 +3,8 @@
   "description": "Events",
   "author": "Matveev Savva",
   "scripts": {
-    "set-prod": "set NODE_ENV=production && node environment.js > src/env.js",
-    "set-dev": "set NODE_ENV=development && node environment.js > src/env.js",
+    "set-prod": "set NODE_ENV=production",
+    "set-dev": "set NODE_ENV=development",
     "development": "npm run set-dev && webpack --config webpack.config.js",
     "production": "npm run set-prod && webpack --config webpack.production.config.js"
   },
