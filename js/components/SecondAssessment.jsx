@@ -10,6 +10,7 @@ var BaseStore = require('../stores/BaseStore');
 
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
+var filter = require('lodash/filter');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
 
@@ -37,17 +38,19 @@ var Task = React.createClass({
 	}
 });
 
-var Block = React.createClass({
+var MonthBlock = React.createClass({
 
 	render(){
 		if (this.props.tasks && this.props.tasks.length === 0) {
 			return null;
 		}
-		var blockContainerStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer);
-		var titleStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.title);
-		var blockStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block);
-		var thStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.th);
-		var descriptionStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.description);
+		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
+		var blockContainerStyles = Obj.getScalarValues(blockContainer);
+		var titleStyles = Obj.getScalarValues(blockContainer.block.title);
+		var blockStyles = Obj.getScalarValues(blockContainer.block);
+		var thStyles = Obj.getScalarValues(blockContainer.block.th);
+		var descriptionStyles = Obj.getScalarValues(blockContainer.block.description);
+		var descTableStyles = Obj.getScalarValues(blockContainer.descriptionTable);
 		return(
 			<div style={blockContainerStyles}>
 				<div style={titleStyles}>{this.props.title}</div>
@@ -70,7 +73,7 @@ var Block = React.createClass({
 						})}
 					</tbody>
 				</table>
-				<table>
+				<table style={descTableStyles}>
 					<tbody>
 						<tr>
 							<td style={descriptionStyles}>Суммарный вес индивидуальных показателей</td>
@@ -84,6 +87,99 @@ var Block = React.createClass({
 						</tr>
 					</tbody>
 				</table>
+			</div>
+		);
+	}
+});
+
+var Block = React.createClass({
+
+	getInitialState(){
+		return {
+			isDisplayMonths: false
+		}
+	},
+
+	_isContainsTasks(){
+		var data = this.props.monthData;
+		var isContains = false;
+		if (data) {
+			isContains = filter(data, function(item) {
+				return item.tasks.length > 0
+			}).length > 0;
+		}
+		return isContains;
+	},
+
+	getToggleMonthsButtonMarkup(){
+		var showMonthsStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.testInfo.showMonths);
+		showMonthsStyles.marginTop = '36px';
+		return this.state.isDisplayMonths ?
+				<span onClick={this.handleToggleMonthsData} style={showMonthsStyles}>Скрыть &uarr;</span>:
+				<span onClick={this.handleToggleMonthsData} style={showMonthsStyles}>Показать по месяцам &darr;</span>
+	},
+
+	handleToggleMonthsData(){
+		this.setState({isDisplayMonths: !this.state.isDisplayMonths});
+	},
+
+	render(){
+		if (this.props.tasks && this.props.tasks.length === 0) {
+			return null;
+		}
+		var blockContainerStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer);
+		var titleStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.title);
+		var blockStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block);
+		var thStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.th);
+		var descriptionStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.description);
+		var descTableStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.descriptionTable);
+		var monthsDataStyles = !this.state.isDisplayMonths ? Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.monthsData) : 
+															 Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.monthsData.displayMonthsData);
+		
+		return(
+			<div style={blockContainerStyles}>
+				<div style={titleStyles}>{this.props.title}</div>
+				<div>
+					<table style={blockStyles}>
+						<thead>
+							<tr>
+								<th style={thStyles}>Наименование</th>
+								<th style={thStyles}>ед. изм-я</th>
+								<th style={thStyles}>вес, %</th>
+								<th style={thStyles}>MIN</th>
+								<th style={thStyles}>TARG</th>
+								<th style={thStyles}>MAX</th>
+								<th style={thStyles}>ФАКТ</th>
+								<th style={thStyles}>% выполнения</th>
+							</tr>
+						</thead>
+						<tbody>
+							{this.props.tasks.map(function(t, index){
+								return <Task key={index} {...t} />
+							})}
+						</tbody>
+					</table>
+					<table style={descTableStyles}>
+						<tbody>
+							<tr>
+								<td style={descriptionStyles}>Суммарный вес индивидуальных показателей</td>
+								<td></td>
+								<td>{commonFuncs.getSummWeight(this.props.tasks)}%</td>
+							</tr>
+							<tr>
+								<td style={descriptionStyles}>% выполнения</td>
+								<td></td>
+								<td>{commonFuncs.getAllPercentComplete(this.props.tasks)}%</td>
+							</tr>
+						</tbody>
+					</table>
+					{this.getToggleMonthsButtonMarkup()}
+				</div>
+				<div style={monthsDataStyles}>
+					{this._isContainsTasks() ? this.props.monthData.map(function(m, index){
+							return <MonthBlock key={index} {...m} />
+						}) : <div>Нет данных</div>}
+				</div>
 			</div>
 		);
 	}
@@ -122,7 +218,7 @@ var SecondAssessment = React.createClass({
 				<Buttons printAction={'createFile'} />
 				<Portal nodeId="wt-zone-right">
 					{(isBoss && !isCollaborator) && <BossInstruction />}
-					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
+					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
 				</Portal>
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />

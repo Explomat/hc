@@ -6,6 +6,7 @@ var AssessmentClasses = require('../styles/AssessmentClasses');
 var Buttons = require('./Buttons');
 var Portal = require('./modules/portal');
 var BaseStore = require('../stores/BaseStore');
+var filter = require('lodash/filter');
 
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
@@ -83,6 +84,17 @@ var Block = React.createClass({
 		return {
 			isDisplayMonths: false
 		}
+	},
+
+	_isContainsTasks(){
+		var data = this.props.monthData;
+		var isContains = false;
+		if (data) {
+			isContains = filter(data, function(item) {
+				return item.tasks.length > 0
+			}).length > 0;
+		}
+		return isContains;
 	},
 
 	getToggleMonthsButtonMarkup(){
@@ -169,9 +181,9 @@ var Block = React.createClass({
 						{this.getToggleMonthsButtonMarkup()}
 					</div>
 					<div style={monthsDataStyles}>
-						{this.props.monthData.map(function(m, index){
+						{this._isContainsTasks() ? this.props.monthData.map(function(m, index){
 							return <MonthBlock key={index} {...m} />
-						})}
+						}) : <div>Нет данных</div>}
 					</div>
 				</div>
 			</div>
@@ -191,7 +203,7 @@ var FourthAssessment = React.createClass({
 				<Buttons printAction={'createFile'} />
 				<Portal nodeId="wt-zone-left">
 					{(isBoss && !isCollaborator) && <BossInstruction />}
-					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
+					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
 				</Portal>
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />

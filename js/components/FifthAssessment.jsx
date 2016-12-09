@@ -271,7 +271,7 @@ var FifthAssessment = React.createClass({
 				<div>
 					<Buttons printAction={'createFile'} />
 					{(isBoss && !isCollaborator) && <BossInstruction />}
-					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
+					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
 					{this.props.blocks.map(function(b, index){
 						return <Block key={index} {...b} />
 					})}

@@ -121,6 +121,9 @@ var AssessmentClasses = {
 						}
 					}
 				}
+    		},
+    		descriptionTable: {
+    			display: 'inline-block'
     		}
 		}
 	}

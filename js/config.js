@@ -42,7 +42,8 @@ module.exports = {
 		appId: 'appId',
 		mainZoneId: 'wt-zone-main',
 		rightZoneId: 'wt-zone-right',
-		leftZoneId: 'wt-zone-left'
+		leftZoneId: 'wt-zone-left',
+		instructionId: 'weblms_assessment-instruction'
 	},
 
 	setCustomBaseUrl(_customBaseUrl){

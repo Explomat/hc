@@ -81,7 +81,7 @@ var ThirdAssessment = React.createClass({
 				<Buttons printAction={'createFile'} />
 				<Portal nodeId="wt-zone-right">
 					{(isBoss && !isCollaborator) && <BossInstruction />}
-					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
+					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
 				</Portal>
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />

@@ -10,6 +10,8 @@ var BaseStore = require('../stores/BaseStore');
 
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
+
+var config = require('../config');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
 
@@ -120,9 +122,9 @@ var Assessment = React.createClass({
 		return (
 			<div>
 				<Buttons printAction={'createFile'} />
-				<Portal nodeId="wt-zone-right">
+				<Portal nodeId={config.dom.instructionId}>
 					{(isBoss && !isCollaborator) && <BossInstruction />}
-					{(isCollaborator && isBoss) && <CollaboratorInstruction />}
+					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
 				</Portal>
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
