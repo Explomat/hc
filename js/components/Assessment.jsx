@@ -10,6 +10,7 @@ var BaseStore = require('../stores/BaseStore');
 
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
+var AssessmentOfCompetencies = require('./AssessmentOfCompetencies');
 
 var config = require('../config');
 //var AssessmentActions = require('../actions/AssessmentActions');
@@ -94,6 +95,11 @@ var Block = React.createClass({
 var Assessment = React.createClass({
 
 	displayName: 'Assessment',
+	
+	hasPreviosAssessment(){
+		var previosAssessment = BaseStore.getPreviosAssessment();
+		return (previosAssessment.headers && previosAssessment.data);
+	},
 
 	getAveragePercentComplete(_blocks){
 		var blocks = _blocks.filter(function(b){
@@ -119,6 +125,8 @@ var Assessment = React.createClass({
 		var percentAverage = AssessmentClasses.assessmentContainer.percentAverage;
 		var percentAverageStyles = this.getCountBlocksWithTasks() > 0 ? Obj.getScalarValues(percentAverage.displayAverage) :
 																		Obj.getScalarValues(percentAverage);
+		
+		var previosAssessment = BaseStore.getPreviosAssessment();
 		return (
 			<div>
 				<Buttons printAction={'createFile'} />
@@ -132,6 +140,7 @@ var Assessment = React.createClass({
 				<div style={percentAverageStyles}>
 					<h3>Средний процент выполнения по кварталам: {this.getAveragePercentComplete(this.props.blocks)}</h3>
 				</div>
+				{this.hasPreviosAssessment() && <AssessmentOfCompetencies {...previosAssessment} />}
 			</div>
 		);
 	}

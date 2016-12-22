@@ -4,7 +4,7 @@ var Ajax = require('../utils/Ajax');
 
 module.exports = {
 	createMeeting: function(paId){
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'createMeeting', pa_id: paId}), null, false).then(function(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData', action: 'createMeeting', pa_id: paId}), null, false).then(function(data){
 			return JSON.parse(data);
 		});
 	}

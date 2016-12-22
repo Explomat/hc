@@ -53,7 +53,7 @@ var Buttons = React.createClass({
 		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
 		//var curStep = BaseStore.getStep();
 		return (
-			<a style={Styles} href={Config.url.createPath({action_name: this.props.printAction, pa_id: paId})}>
+			<a style={Styles} href={Config.url.createPath({action_name: 'getData', action: this.props.printAction, pa_id: paId})}>
 				Распечатать бланк
 			</a>
 		);

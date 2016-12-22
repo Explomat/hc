@@ -14,10 +14,10 @@ var exp = {
 			BaseActions.receiveData(data);
 			ReactDOM.render(React.createElement(Base), app);
 		}.bind(this), function(err){
-			BaseAPI.logError(err.message);
+			//BaseAPI.logError(err.message);
 			console.log(err, err.stack);
 		}).catch(function(e){
-			BaseAPI.logError(e.message);
+			//BaseAPI.logError(e.message);
 			console.log(e, e.stack);
 		});
 	}

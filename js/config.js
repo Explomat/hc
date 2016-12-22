@@ -3,7 +3,7 @@ var routerId = '6251547620930508696';
 var customBaseUrl = '/custom_web_template.html';
 
 servers
-	.addServer('6298148414814771742')
+	.addServer('6366510361821014881')
 	.addActions(
 		[
 			'getData',

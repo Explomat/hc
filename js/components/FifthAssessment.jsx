@@ -14,6 +14,7 @@ var UrlUtils = require('../utils/url');
 var TextView = require('./modules/TextView');
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
+var AssessmentOfCompetencies = require('./AssessmentOfCompetencies');
 
 function _isDisabledAll(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss){
@@ -221,6 +222,11 @@ var Block = React.createClass({
 var FifthAssessment = React.createClass({
 
 	displayName: 'FifthAssessment',
+	
+	hasPreviosAssessment(){
+		var previosAssessment = BaseStore.getPreviosAssessment();
+		return (previosAssessment.headers && previosAssessment.data);
+	},
 
 	_changeZonesStyles(){
 		var mainZone = document.getElementById(Config.dom.mainZoneId);
@@ -265,20 +271,19 @@ var FifthAssessment = React.createClass({
 		var isBoss = BaseStore.isBoss();
 		var isCollaborator = BaseStore.isCollaborator();
 		var step = BaseStore.getStep();
-
-		if (step !== Steps.keys.firstStep || (step === Steps.keys.firstStep && isCollaborator)){
-			return (
-				<div>
-					<Buttons printAction={'createFile'} />
-					{(isBoss && !isCollaborator) && <BossInstruction />}
-					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
-					{this.props.blocks.map(function(b, index){
-						return <Block key={index} {...b} />
-					})}
-				</div>
-			);
-		}
-		return null;
+		var previosAssessment = BaseStore.getPreviosAssessment();
+		var _is = step !== Steps.keys.firstStep || (step === Steps.keys.firstStep && isCollaborator);
+		return (
+			<div>
+				{_is && <Buttons printAction={'createFile'} />}
+				{(isBoss && !isCollaborator) && <BossInstruction />}
+				{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
+				{_is && this.props.blocks.map(function(b, index){
+					return <Block key={index} {...b} />
+				})}
+				{this.hasPreviosAssessment() && <AssessmentOfCompetencies {...previosAssessment} />}
+			</div>
+		);
 	}
 });
 

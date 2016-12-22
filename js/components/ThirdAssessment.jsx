@@ -8,6 +8,9 @@ var BaseStore = require('../stores/BaseStore');
 
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
+var AssessmentOfCompetencies = require('./AssessmentOfCompetencies');
+
+var config = require('../config');
 //var AssessmentActions = require('../actions/AssessmentActions');
 
 var Task = React.createClass({
@@ -72,20 +75,27 @@ var Block = React.createClass({
 var ThirdAssessment = React.createClass({
 
 	displayName: 'ThirdAssessment',
+	
+	hasPreviosAssessment(){
+		var previosAssessment = BaseStore.getPreviosAssessment();
+		return (previosAssessment.headers && previosAssessment.data);
+	},
 
 	render() {
 		var isBoss = BaseStore.isBoss();
 		var isCollaborator = BaseStore.isCollaborator();
+		var previosAssessment = BaseStore.getPreviosAssessment();
 		return (
 			<div>
 				<Buttons printAction={'createFile'} />
-				<Portal nodeId="wt-zone-right">
+				<Portal nodeId={config.dom.instructionId}>
 					{(isBoss && !isCollaborator) && <BossInstruction />}
 					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
 				</Portal>
 				{this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
 				})}
+				{this.hasPreviosAssessment() && <AssessmentOfCompetencies {...previosAssessment} />}
 			</div>
 		);
 	}

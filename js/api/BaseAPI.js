@@ -15,7 +15,7 @@ module.exports = {
 								{title: 'title_2', unit: '', weight: 3, min: '', targ: 3, max: 4, fact: 1, percentComplete: 40 }
 							]
 						])*/
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData', pa_id: paId}), null, false).then(function(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData', action: 'getData', pa_id: paId}), null, false).then(function(data){
 			return JSON.parse(data, (key, value) => {
 				return value === 'true' ? true : value === 'false' ? false : value;
 			});
@@ -23,10 +23,10 @@ module.exports = {
 	},
 
 	saveData: function(data, paId){
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'saveData', pa_id: paId}), JSON.stringify(data), false, true, null, 'POST');
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData', action: 'saveData', pa_id: paId}), JSON.stringify(data), false, true, null, 'POST');
 	},
 
 	logError: function(err){
-		Ajax.sendRequest(Config.url.createPath({action_name: 'logError', error: err}), null, false);
+		Ajax.sendRequest(Config.url.createPath({action_name: 'getData', action: 'logError', error: err}), null, false);
 	}
 }

@@ -136,6 +136,10 @@ var BaseStore = extend({}, EventEmitter.prototype, {
 	isCollaborator: function(){
 		return _base.isCollaborator;
 	},
+	
+	getPreviosAssessment: function(){
+		return _base.previosAssessmentResult;
+	},
 
 	emitChange: function() {
 		this.emit('change');
