@@ -46,7 +46,7 @@ function _isDisabledFact(/*step, isCollaborator, isBoss*/){
 	else if (step === Steps.keys.fifthStep) {
 		return true
 	}*/
-	return true;
+	return false;
 }
 
 

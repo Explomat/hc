@@ -1,5 +1,7 @@
 var React = require('react');
+var commonFuncs = require('../utils/commonFuncs');
 var Obj = require('../utils/object');
+var ceil = require('lodash/ceil');
 var assign = require('lodash/assign');
 var AssessmentClasses = require('../styles/AssessmentClasses');
 var Buttons = require('./Buttons');
@@ -18,6 +20,8 @@ var Task = React.createClass({
 	render(){
 		var min = this.props.min;
 		var targ = this.props.targ;
+		var max = this.props.max;
+		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
 		var styles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td);
 		var factStyles = assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.fact), styles);
 		return(
@@ -27,9 +31,9 @@ var Task = React.createClass({
 				<td style={styles}>{this.props.weight}</td>
 				<td style={styles}>{min}</td>
 				<td style={styles}>{targ}</td>
-				<td style={styles}>{this.props.max}</td>
-				<td style={factStyles}></td>
-				<td style={styles}></td>
+				<td style={styles}>{max}</td>
+				<td style={factStyles}>{fact}</td>
+				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ, max)}</td>
 			</tr>
 		);
 	}
