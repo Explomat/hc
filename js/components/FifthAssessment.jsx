@@ -112,7 +112,7 @@ var Task = React.createClass({
 		var isCollaborator = BaseStore.isCollaborator();
 		var isBoss = BaseStore.isBoss();
 		var isDisabledAll = _isDisabledAll(step, isCollaborator, isBoss);
-		var isDisabledFact = _isDisabledFact();
+		//var isDisabledFact = _isDisabledFact();
 		var isDisabledTextarea = _isDisabledTextarea(step, isCollaborator, isBoss);
 
 		var block = AssessmentClasses.assessmentContainer.blockContainer.block;
@@ -145,7 +145,7 @@ var Task = React.createClass({
 					<TextView onBlur={this.handleChangeMax} isValid={this._isNumberOrReal} style={inputStyles} value={max} disabled={isDisabledAll} />
 				</td>
 				<td style={factStyles}>
-					<TextView onBlur={this.handleChangeFact} isValid={this._isNumberOrReal} style={inputStyles} value={fact} disabled={isDisabledFact} />
+					<TextView onBlur={this.handleChangeFact} isValid={this._isNumberOrReal} style={inputStyles} value={fact} disabled={isDisabledAll} />
 				</td>
 				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ, max)}</td>
 				<td style={styles}>
