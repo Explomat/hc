@@ -8,9 +8,10 @@ var AssessmentClasses = require('../styles/AssessmentClasses');
 var ButtonsClasses = require('../styles/ButtonsClasses');
 var Steps = require('../utils/steps');
 var Buttons = require('./Buttons');
-var Config = require('../config');
+var config = require('../config');
 var commonFuncs = require('../utils/commonFuncs');
 var UrlUtils = require('../utils/url');
+var Portal = require('./modules/portal');
 var TextView = require('./modules/TextView');
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
@@ -29,8 +30,8 @@ function _isDisabledAll(step, isCollaborator, isBoss){
 	return true;
 }
 
-function _isDisabledFact(/*step, isCollaborator, isBoss*/){
-/*	if (!isCollaborator && !isBoss) {
+/*function _isDisabledFact(step, isCollaborator, isBoss){
+	if (!isCollaborator && !isBoss) {
 		return true;
 	}
 
@@ -45,9 +46,9 @@ function _isDisabledFact(/*step, isCollaborator, isBoss*/){
 	}
 	else if (step === Steps.keys.fifthStep) {
 		return true
-	}*/
+	}
 	return false;
-}
+}*/
 
 
 function _isDisabledTextarea(step, isCollaborator, isBoss){
@@ -229,8 +230,8 @@ var FifthAssessment = React.createClass({
 	},
 
 	_changeZonesStyles(){
-		var mainZone = document.getElementById(Config.dom.mainZoneId);
-		var rightZone = document.getElementById(Config.dom.rightZoneId);
+		var mainZone = document.getElementById(config.dom.mainZoneId);
+		var rightZone = document.getElementById(config.dom.rightZoneId);
 		if (!mainZone || !rightZone){
 			return;
 		}
@@ -275,7 +276,9 @@ var FifthAssessment = React.createClass({
 		var _is = step !== Steps.keys.firstStep || (step === Steps.keys.firstStep && isCollaborator);
 		return (
 			<div>
-				{_is && <Buttons printAction={'createFile'} />}
+				<Portal nodeId={config.dom.buttonsId}>
+					{_is && <Buttons printAction={'createFile'} />}
+				</Portal>
 				{(isBoss && !isCollaborator) && <BossInstruction />}
 				{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
 				{_is && this.props.blocks.map(function(b, index){

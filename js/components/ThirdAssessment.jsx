@@ -91,7 +91,9 @@ var ThirdAssessment = React.createClass({
 		var previosAssessment = BaseStore.getPreviosAssessment();
 		return (
 			<div>
-				<Buttons printAction={'createFile'} />
+				<Portal nodeId={config.dom.buttonsId}>
+					<Buttons printAction={'createFile'} />
+				</Portal>
 				<Portal nodeId={config.dom.instructionId}>
 					{(isBoss && !isCollaborator) && <BossInstruction />}
 					{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}

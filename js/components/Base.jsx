@@ -7,6 +7,8 @@ var ThirdAssessment = require('./ThirdAssessment');
 var FourthAssessment = require('./FourthAssessment');
 var FifthAssessment = require('./FifthAssessment');
 
+var config = require('../config');
+
 function getState() {
 	return BaseStore.getData();
 }
@@ -37,12 +39,22 @@ var Base = React.createClass({
 			}
 		});
 	},
+	
+	_cutDefaultForm(){
+		var formNode = document.getElementById(config.dom.cutFormId);
+		var appendNode = document.getElementById(config.dom.buttonsId);
+		if (formNode && appendNode){
+			//var outerHtml = formNode.outerHTML;
+			appendNode.appendChild(formNode);
+		}
+	},
 
 	componentDidMount() {
 		this._isSaved = false;
 		BaseStore.addChangeListener(this._onChange);
 		this._preventFormSubmit();
 		this._changeAssessmentCollName();
+		this._cutDefaultForm();
 	},
 
 	componentWillUnmount() {
