@@ -242,7 +242,7 @@ var FifthAssessment = React.createClass({
 
 	_saveDataBeforeSubmit(){
 		var self = this;
-		$('#f_switch').submit(function (e) {
+		$('form#f_switch').submit(function (e) {
 			if (!self._isSaved){
 				e.preventDefault();
 				var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');

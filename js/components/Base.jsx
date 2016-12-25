@@ -6,6 +6,7 @@ var SecondAssessment = require('./SecondAssessment');
 var ThirdAssessment = require('./ThirdAssessment');
 var FourthAssessment = require('./FourthAssessment');
 var FifthAssessment = require('./FifthAssessment');
+var SixthAssessment = require('./SixthAssessment');
 
 var config = require('../config');
 
@@ -80,7 +81,7 @@ var Base = React.createClass({
 	},
 
 	render() {
-		var views = [Assessment, SecondAssessment, ThirdAssessment, FourthAssessment, FifthAssessment];
+		var views = [Assessment, SecondAssessment, ThirdAssessment, FourthAssessment, FifthAssessment, SixthAssessment];
 		var viewName = this.state.viewName;
 		return this.getView(views, viewName);
 	}

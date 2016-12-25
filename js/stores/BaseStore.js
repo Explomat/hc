@@ -1,10 +1,12 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var BaseConstants = require('../constants/BaseConstants');
+var AssessmentConstants = require('../constants/AssessmentConstants');
 var Base = require('../models/Base');
 var Task = require('../models/Task');
 var extend = require('extend');
 var find = require('lodash/find');
+var assign = require('lodash/assign');
 
 var _base = {};
 
@@ -115,6 +117,17 @@ function changeComment(blockId, taskId, val){
 	}
 }
 
+function createTest(message, isAssignTest, isPassTest){
+	var block = _base.blocks.length > 0 ? _base.blocks[0] : null;
+	if (block){
+		block.testInfo = assign(block.testInfo, {
+			message: message,
+			isAssignTest: isAssignTest,
+			isPassTest: isPassTest
+		})
+	}
+}
+
 var BaseStore = extend({}, EventEmitter.prototype, {
 	
 	getData: function(){
@@ -139,6 +152,10 @@ var BaseStore = extend({}, EventEmitter.prototype, {
 	
 	getPreviosAssessment: function(){
 		return _base.previosAssessmentResult;
+	},
+	
+	getFirstBlockForSixthAssessment: function(){
+		return _base.blocks.length > 0 ? _base.blocks[0] : null;
 	},
 
 	emitChange: function() {
@@ -192,6 +209,10 @@ BaseStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case BaseConstants.CHANGE_COMMENT:
 			changeComment(action.blockId, action.taskId, action.val);
+			break;
+			
+		case AssessmentConstants.CREATE_TEST:
+			createTest(action.message, action.isAssignTest, action.isPassTest);
 			break;
 		//---------------------------------------
 		default:
