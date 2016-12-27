@@ -153,7 +153,7 @@ var Task = React.createClass({
 					<textarea style={textareaStyles} rows={4} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
 				</td>
 				<td style={styles}>
-					<button style={ButtonsClasses} onClick={this.handleRemoveTask} disabled={isDisabledAll}>&times;</button>
+					<button tabIndex={-1} style={ButtonsClasses} onClick={this.handleRemoveTask} disabled={isDisabledAll}>&times;</button>
 				</td>
 			</tr>
 		);
@@ -178,7 +178,7 @@ var Block = React.createClass({
 		var thStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.th);
 		var descriptionStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.description);
 		var tdButtonStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td.tdButton);
-		var buttonStyles = assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td.tdButton.button), ButtonsClasses);
+		var buttonStyles = isDisabledAddButton ? {float: 'right'} : assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td.tdButton.button), ButtonsClasses);
 		return(
 			<div style={blockContainerStyles}>
 				<div style={titleStyles}>{this.props.title}</div>
@@ -210,7 +210,7 @@ var Block = React.createClass({
 							<td></td>
 							<td>{commonFuncs.getSummWeight(this.props.tasks)}%</td>
 							<td style={tdButtonStyles}>
-								<button style={buttonStyles} onClick={this.handleAddTask} disabled={isDisabledAddButton}>Добавить</button>
+								<input type="button" style={buttonStyles} onClick={this.handleAddTask} value="Добавить" disabled={isDisabledAddButton} />
 							</td>
 						</tr>
 					</tbody>

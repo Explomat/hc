@@ -3,6 +3,7 @@ var Obj = require('../utils/object');
 var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
+var ButtonsClasses = require('../styles/ButtonsClasses');
 var Buttons = require('./Buttons');
 var Portal = require('./modules/portal');
 var BaseStore = require('../stores/BaseStore');
@@ -12,8 +13,9 @@ var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
 var AssessmentOfCompetencies = require('./AssessmentOfCompetencies');
 
+var UrlUtils = require('../utils/url');
 var config = require('../config');
-//var AssessmentActions = require('../actions/AssessmentActions');
+var AssessmentActions = require('../actions/AssessmentActions');
 
 var MonthBlock = React.createClass({
 
@@ -85,7 +87,17 @@ var Block = React.createClass({
 
 	getInitialState(){
 		return {
-			isDisplayMonths: false
+			isDisplayMonths: false,
+			isDisplayMessage: false
+		}
+	},
+	
+	componentWillReceiveProps(){
+		var isDisplayMessage = this.state.isDisplayMessage;
+		var message = this.props.testInfo.message;
+		if (isDisplayMessage && message !== null){
+			alert(message);
+			this.setState({isDisplayMessage: false});
 		}
 	},
 
@@ -98,6 +110,51 @@ var Block = React.createClass({
 			}).length > 0;
 		}
 		return isContains;
+	},
+	
+	handleCreateTest(){
+		this.setState({isDisplayMessage: true});
+		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
+		AssessmentActions.createTest(paId);
+	},
+	
+	getTestInfoMarkup(){
+		var isCollaborator = BaseStore.isCollaborator();
+		var testInfo = this.props.testInfo;
+		var isAssignTest = testInfo.isAssignTest;
+		var isPassTest = testInfo.isPassTest;
+		
+		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
+		var thStyles = Obj.getScalarValues(blockContainer.block.th);
+		var tdStyles = Obj.getScalarValues(blockContainer.block.task.td);
+		var testInfoDescriptionStyles = Obj.getScalarValues(blockContainer.block.testInfo.description.displayDescription);
+		
+		if (isAssignTest){
+			if (isPassTest){
+				return(
+					<table style={testInfoDescriptionStyles}>
+						<thead>
+							<tr>
+								<th style={thStyles}>Название</th>
+								<th style={thStyles}>Результат</th>
+								<th style={thStyles}>Статус</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style={tdStyles}>{testInfo.name}</td>
+								<td style={tdStyles}>{testInfo.score}</td>
+								<td style={tdStyles}>{testInfo.state}</td>
+							</tr>
+						</tbody>
+					</table>
+				);
+			}
+			else {
+				return (isCollaborator && <div>Вам назначен тест, пожалуйста перейдите в личный кабинет для прохождения.</div>)
+			}
+		}
+		return (isCollaborator && <button style={ButtonsClasses} onClick={this.handleCreateTest}>Пройти тест</button>)
 	},
 
 	getToggleMonthsButtonMarkup(){
@@ -115,18 +172,14 @@ var Block = React.createClass({
 		if (this.props.tasks && this.props.tasks.length === 0) {
 			return null;
 		}
-		var testInfo = this.props.testInfo;
 		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
 		var blockContainerStyles = Obj.getScalarValues(blockContainer);
 		var titleStyles = Obj.getScalarValues(blockContainer.block.title);
 		//var tableContainerStyles = Obj.getScalarValues(blockContainer.block.tableContainer);
 		var blockStyles = Obj.getScalarValues(blockContainer.block);
 		var thStyles = Obj.getScalarValues(blockContainer.block.th);
-		var tdStyles = Obj.getScalarValues(blockContainer.block.task.td);
 		//var descriptionStyles = Obj.getScalarValues(blockContainer.block.description);
 		var testInfoStyles = Obj.getScalarValues(blockContainer.block.testInfo);
-		var testInfoDescriptionStyles = !testInfo.error ? Obj.getScalarValues(blockContainer.block.testInfo.description.displayDescription) : Obj.getScalarValues(blockContainer.block.testInfo.description);
-		var testInfoErrorStyles = !testInfo.error ? Obj.getScalarValues(blockContainer.block.testInfo.error) : Obj.getScalarValues(blockContainer.block.testInfo.error.displayError);
 		var monthsDataStyles = !this.state.isDisplayMonths ? Obj.getScalarValues(blockContainer.block.monthsData) : Obj.getScalarValues(blockContainer.block.monthsData.displayMonthsData);
 		var tasksResultStyles = Obj.getScalarValues(blockContainer.block.tasksResult);
 		var ratingStyles = Obj.getScalarValues(blockContainer.block.tasksResult.rating);
@@ -164,23 +217,7 @@ var Block = React.createClass({
 				</div>
 				<div>
 					<div style={testInfoStyles}>
-						<table style={testInfoDescriptionStyles}>
-							<thead>
-								<tr>
-									<th style={thStyles}>Название</th>
-									<th style={thStyles}>Результат</th>
-									<th style={thStyles}>Статус</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td style={tdStyles}>{testInfo.name}</td>
-									<td style={tdStyles}>{testInfo.score}</td>
-									<td style={tdStyles}>{testInfo.state}</td>
-								</tr>
-							</tbody>
-						</table>
-						<span style={testInfoErrorStyles}>{testInfo.error}</span>
+						{this.getTestInfoMarkup()}
 						{this.getToggleMonthsButtonMarkup()}
 					</div>
 					<div style={monthsDataStyles}>
@@ -190,13 +227,41 @@ var Block = React.createClass({
 					</div>
 				</div>
 			</div>
-		);
+		); 
 	}
 });
 
 var FourthAssessment = React.createClass({
 
 	displayName: 'FourthAssessment',
+	
+	componentDidMount(){
+		this.preventForms();	
+	},
+	
+	preventForms(){
+		var isCollaborator = BaseStore.isCollaborator();
+		var block = BaseStore.getFirstBlockForSixthAssessment();
+		
+		$('form#workflow_assessment_process').submit(function(e){
+			if (block){
+				var testInfo = block.testInfo;
+				if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
+					alert("Необходимо пройти тест!");
+					e.preventDefault();
+				}
+			}
+		});
+		$('form#f_switch').submit(function(e){
+			if (block){
+				var testInfo = block.testInfo;
+				if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
+					alert("Необходимо пройти тест!");
+					e.preventDefault();
+				}
+			}
+		})
+	},
 	
 	hasPreviosAssessment(){
 		var previosAssessment = BaseStore.getPreviosAssessment();

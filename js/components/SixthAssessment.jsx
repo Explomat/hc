@@ -117,6 +117,7 @@ var Block = React.createClass({
 	},
 	
 	getTestInfoMarkup(){
+		var isCollaborator = BaseStore.isCollaborator();
 		var testInfo = this.props.testInfo;
 		var isAssignTest = testInfo.isAssignTest;
 		var isPassTest = testInfo.isPassTest;
@@ -148,12 +149,10 @@ var Block = React.createClass({
 				);
 			}
 			else {
-				return <div>Вам назначен тест, пожалуйста перейдите в личный кабинет для прохождения.</div>
+				return (isCollaborator && <div>Вам назначен тест, пожалуйста перейдите в личный кабинет для прохождения.</div>)
 			}
 		}
-		return <button style={ButtonsClasses} onClick={this.handleCreateTest}>Пройти тест</button>
-		
-		
+		return (isCollaborator && <button style={ButtonsClasses} onClick={this.handleCreateTest}>Пройти тест</button>)
 	},
 
 	render(){
@@ -184,11 +183,13 @@ var SixthAssessment = React.createClass({
 	},
 	
 	preventForms(){
+		var isCollaborator = BaseStore.isCollaborator();
 		var block = BaseStore.getFirstBlockForSixthAssessment();
 		$('form#workflow_assessment_process').submit(function(e){
+			e.preventDefault();
 			if (block){
 				var testInfo = block.testInfo;
-				if (!testInfo.isAssignTest || !testInfo.isPassTest){
+				if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
 					alert("Необходимо пройти тест!");
 					e.preventDefault();
 				}
@@ -197,7 +198,7 @@ var SixthAssessment = React.createClass({
 		$('form#f_switch').submit(function(e){
 			if (block){
 				var testInfo = block.testInfo;
-				if (!testInfo.isAssignTest || !testInfo.isPassTest){
+				if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
 					alert("Необходимо пройти тест!");
 					e.preventDefault();
 				}
