@@ -179,14 +179,23 @@ var SixthAssessment = React.createClass({
 	displayName: 'SixthAssessment',
 	
 	componentDidMount(){
-		this.preventForms();	
+		this.displayButtons();
 	},
 	
-	preventForms(){
+	displayButtons(){
 		var isCollaborator = BaseStore.isCollaborator();
-		var block = BaseStore.getFirstBlockForSixthAssessment();
-		$('form#workflow_assessment_process').submit(function(e){
-			e.preventDefault();
+		var block = BaseStore.getCurBlockForAssessment();
+		
+		if (block){
+			var testInfo = block.testInfo;
+			if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
+				$(".ass-button-container").remove();
+				//$("form#workflow_assessment_process").remove();
+				//$("form#f_switch").remove();
+			}
+		}
+		
+		/*$("form#workflow_assessment_process").submit(function(e){
 			if (block){
 				var testInfo = block.testInfo;
 				if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
@@ -195,7 +204,7 @@ var SixthAssessment = React.createClass({
 				}
 			}
 		});
-		$('form#f_switch').submit(function(e){
+		$("form#f_switch").submit(function(e){
 			if (block){
 				var testInfo = block.testInfo;
 				if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
@@ -203,7 +212,7 @@ var SixthAssessment = React.createClass({
 					e.preventDefault();
 				}
 			}
-		})
+		})*/
 	},
 	
 	hasPreviosAssessment(){

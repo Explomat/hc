@@ -154,8 +154,9 @@ var BaseStore = extend({}, EventEmitter.prototype, {
 		return _base.previosAssessmentResult;
 	},
 	
-	getFirstBlockForSixthAssessment: function(){
-		return _base.blocks.length > 0 ? _base.blocks[0] : null;
+	//текущий период оценки (первое полугодие или второе)
+	getCurBlockForAssessment: function(){
+		return _base.blocks.length > 0 ? _base.blocks[_base.curPeriod] : null;
 	},
 
 	emitChange: function() {
