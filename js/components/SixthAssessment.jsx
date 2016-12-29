@@ -149,7 +149,7 @@ var Block = React.createClass({
 				);
 			}
 			else {
-				return (isCollaborator && <div>Вам назначен тест, пожалуйста перейдите в личный кабинет для прохождения.</div>)
+				return (isCollaborator && <div>Тест назначен. Для его прохождения перейдите по ссылке, отправленной вам на почту.</div>)
 			}
 		}
 		return (isCollaborator && <button style={ButtonsClasses} onClick={this.handleCreateTest}>Пройти тест</button>)

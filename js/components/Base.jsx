@@ -41,6 +41,10 @@ var Base = React.createClass({
 		});
 	},
 	
+	_changeSomeStyles(){
+		$(".ass-button-container").css({marginTop: "0px", borderTop: "none"});	
+	},
+	
 	_cutDefaultForm(){
 		var formNode = document.getElementById(config.dom.cutFormId);
 		var appendNode = document.getElementById(config.dom.buttonsId);
@@ -56,6 +60,7 @@ var Base = React.createClass({
 		this._preventFormSubmit();
 		this._changeAssessmentCollName();
 		this._cutDefaultForm();
+		this._changeSomeStyles();
 	},
 
 	componentWillUnmount() {
