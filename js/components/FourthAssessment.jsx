@@ -3,7 +3,7 @@ var Obj = require('../utils/object');
 var assign = require('lodash/assign');
 var ceil = require('lodash/ceil');
 var AssessmentClasses = require('../styles/AssessmentClasses');
-var ButtonsClasses = require('../styles/ButtonsClasses');
+//var ButtonsClasses = require('../styles/ButtonsClasses');
 var Buttons = require('./Buttons');
 var Portal = require('./modules/portal');
 var BaseStore = require('../stores/BaseStore');
@@ -154,7 +154,7 @@ var Block = React.createClass({
 				return (isCollaborator && <div>Тест назначен. Для его прохождения перейдите по ссылке, отправленной вам на почту.</div>)
 			}
 		}
-		return (isCollaborator && <button style={ButtonsClasses} onClick={this.handleCreateTest}>Пройти тест</button>)
+		return (isCollaborator && <input type="button" className="ass-button" onClick={this.handleCreateTest} value="Пройти тест" />)
 	},
 
 	getToggleMonthsButtonMarkup(){

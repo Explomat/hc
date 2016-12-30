@@ -118,7 +118,7 @@ function changeComment(blockId, taskId, val){
 }
 
 function createTest(message, isAssignTest, isPassTest){
-	var block = _base.blocks.length > 0 ? _base.blocks[0] : null;
+	var block = _base.blocks.length > 0 ? _base.blocks[_base.curPeriod] : null;
 	if (block){
 		block.testInfo = assign(block.testInfo, {
 			message: message,
