@@ -88,7 +88,14 @@ var Base = React.createClass({
 	render() {
 		var views = [Assessment, SecondAssessment, ThirdAssessment, FourthAssessment, FifthAssessment, SixthAssessment];
 		var viewName = this.state.viewName;
-		return this.getView(views, viewName);
+		var style = {
+			margin: '20px'
+		}
+		return (
+			<div style={style}>
+				{this.getView(views, viewName)}
+			</div>
+		)
 	}
 });
 

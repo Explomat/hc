@@ -85,9 +85,11 @@ var Buttons = React.createClass({
 
 	render(){
 		return(
-			<div style={{padding: '3px', paddingBottom: '8px', 'backgroundColor': '#eee', textAlign: 'center'}}>
-				{this.getPrintButtonMarkup()}
-				{this.getMeetingButtonMarkup()}
+			<div style={{padding: '0 20px'}}>
+				<div style={{padding: '3px', paddingBottom: '8px', 'backgroundColor': '#eee', textAlign: 'center'}}>
+					{this.getPrintButtonMarkup()}
+					{this.getMeetingButtonMarkup()}
+				</div>
 			</div>
 		);
 	}

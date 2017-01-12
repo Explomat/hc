@@ -1,10 +1,16 @@
 var React = require('react');
 
 var BossInstruction = React.createClass({
+	
+	getDefaultProps(){
+		return {
+			style: {}
+		}	
+	},
 
 	render() {
 		return (
-			<div>
+			<div style={this.props.style}>
 				<p>
 					<u><i><strong>Для проведения оценки сотрудника, Вам необходимо:</strong></i></u>
 				</p>

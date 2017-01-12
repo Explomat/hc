@@ -153,7 +153,7 @@ var Task = React.createClass({
 					<textarea style={textareaStyles} rows={4} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
 				</td>
 				<td style={styles}>
-					<button tabIndex={-1} style={ButtonsClasses} onClick={this.handleRemoveTask} disabled={isDisabledAll}>&times;</button>
+					<input type="button" style={ButtonsClasses} onClick={this.handleRemoveTask} disabled={isDisabledAll} value="&times;" />
 				</td>
 			</tr>
 		);
@@ -274,13 +274,18 @@ var FifthAssessment = React.createClass({
 		var step = BaseStore.getStep();
 		var previosAssessment = BaseStore.getPreviosAssessment();
 		var _is = step !== Steps.keys.firstStep || (step === Steps.keys.firstStep && isCollaborator);
+		var instructionStyle = {
+			textAlign: 'left',
+		    width: '620px',
+		    margin: '0 auto'
+		}
 		return (
 			<div>
 				<Portal nodeId={config.dom.buttonsId}>
 					{_is && <Buttons printAction={'createFile'} />}
 				</Portal>
-				{(isBoss && !isCollaborator) && <BossInstruction />}
-				{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction />}
+				{(isBoss && !isCollaborator) && <BossInstruction style={instructionStyle}/>}
+				{((isCollaborator && isBoss) || (!isBoss && isCollaborator)) && <CollaboratorInstruction style={instructionStyle}/>}
 				{_is && this.props.blocks.map(function(b, index){
 					return <Block key={index} {...b} />
 				})}

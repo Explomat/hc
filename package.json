@@ -1,6 +1,6 @@
 {
-  "name": "Events",
-  "description": "Events",
+  "name": "homecredit",
+  "description": "homecredit",
   "author": "Matveev Savva",
   "scripts": {
     "set-prod": "set NODE_ENV=production",

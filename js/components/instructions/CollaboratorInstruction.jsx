@@ -1,10 +1,16 @@
 var React = require('react');
 
 var CollaboratorInstruction = React.createClass({
+	
+	getDefaultProps(){
+		return {
+			style: {}
+		}	
+	},
 
 	render() {
 		return (
-			<div>
+			<div style={this.props.style}>
 				<p>
 					<u><i><strong>Для проведения самооценки, Вам необходимо:</strong></i></u>
 				</p>
