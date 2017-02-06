@@ -95,7 +95,7 @@ var Block = React.createClass({
 	componentWillReceiveProps(){
 		var isDisplayMessage = this.state.isDisplayMessage;
 		var message = this.props.testInfo.message;
-		if (isDisplayMessage && message !== null){
+		if (isDisplayMessage && message){
 			alert(message);
 			this.setState({isDisplayMessage: false});
 		}

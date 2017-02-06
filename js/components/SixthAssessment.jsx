@@ -91,12 +91,12 @@ var Block = React.createClass({
 	},
 	
 	componentWillReceiveProps(){
-		var isDisplayMessage = this.state.isDisplayMessage;
+		/*var isDisplayMessage = this.state.isDisplayMessage;
 		var message = this.props.testInfo.message;
-		if (isDisplayMessage && message !== null){
+		if (isDisplayMessage && message){
 			alert(message);
 			this.setState({isDisplayMessage: false});
-		}
+		}*/
 	},
 
 	_isContainsTasks(){
@@ -158,7 +158,7 @@ var Block = React.createClass({
 	render(){
 		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
 		var blockContainerStyles = Obj.getScalarValues(blockContainer);
-		var testInfoStyles = Obj.getScalarValues(blockContainer.block.testInfo);
+		//var testInfoStyles = Obj.getScalarValues(blockContainer.block.testInfo);
 		return(
 			<div style={blockContainerStyles}>
 				<div>
@@ -166,9 +166,9 @@ var Block = React.createClass({
 						return <MonthBlock key={index} {...m} />
 					})}
 				</div>
-				<div style={testInfoStyles}>
+				{/*<div style={testInfoStyles}>
 					{this.getTestInfoMarkup()}
-				</div>
+				</div>*/}
 			</div>
 		);
 	}
@@ -179,7 +179,7 @@ var SixthAssessment = React.createClass({
 	displayName: 'SixthAssessment',
 	
 	componentDidMount(){
-		this.displayButtons();
+		//this.displayButtons();
 	},
 	
 	displayButtons(){
@@ -190,8 +190,6 @@ var SixthAssessment = React.createClass({
 			var testInfo = block.testInfo;
 			if ((!testInfo.isAssignTest || !testInfo.isPassTest) && isCollaborator){
 				$(".ass-button-container").remove();
-				//$("form#workflow_assessment_process").remove();
-				//$("form#f_switch").remove();
 			}
 		}
 		
