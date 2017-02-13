@@ -148,7 +148,7 @@ var Task = React.createClass({
 				<td style={factStyles}>
 					<TextView onBlur={this.handleChangeFact} isValid={this._isNumberOrReal} style={inputStyles} value={fact} disabled={isDisabledAll} />
 				</td>
-				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ, max)}</td>
+				<td style={styles}>{commonFuncs.getPercentCompleteFifth(fact, min, targ, max)}</td>
 				<td style={styles}>
 					<textarea style={textareaStyles} rows={4} onChange={this.handleChangeComment} disabled={isDisabledTextarea} value={this.props.comment}></textarea>
 				</td>

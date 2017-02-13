@@ -17,6 +17,119 @@ var ceil = require('lodash/ceil');
 
 }*/
 
+function getPercentCompleteFifth(fact, min, targ, max){
+	if (fact == '') {
+		return 0;
+	}
+
+	if (targ == '') {
+		targ = 0;
+	}
+	
+	fact = parseFloat(fact);
+	min = parseFloat(min);
+	targ = parseFloat(targ);
+	max = parseFloat(max);
+
+	fact = isNaN(fact) ? '' : fact;
+	min = isNaN(min) ? '' : min;
+	targ = isNaN(targ) ? '' : targ;
+	max = isNaN(max) ? '' : max;
+	
+	var percent = 0;
+
+	if (min == "" && max == "" && targ != "") {
+		percent = fact == targ ? 1 : 0;
+	} else {
+		if (min == targ || min == "") {
+			if (max > targ) {
+				percent = fact < targ ? 0 : fact < max ? 1+(0.5)*(fact - targ) / (max - targ) : 1.5;
+			} else {
+				percent = fact > targ ? 0 : fact > max ? 1+(0.5)*(fact - targ) / (max - targ) : 1.5;
+			}
+		} else {
+		    if (max == targ || max == "") {
+				if (min < targ) {
+					if (fact <= min) {
+						percent = 0;
+					} else {
+						if (fact < targ) {
+							if (min == '') { 
+								min = 0;
+							} 
+							min = Number(min);
+							if (targ == '') { 
+								targ = 0;
+							}
+							targ = Number(targ);
+							percent = (fact - min) / (targ - min);
+						} else {
+							percent = 1;
+						}
+					}
+				} else {
+					if (fact >= min) {
+						percent = 0;
+					} else {
+						if (fact > targ) {
+							if (min == '') { 
+								min = 0;
+							} 
+							min = Number(min);
+							if (targ == '') { 
+								targ = 0;
+							}
+							targ = Number(targ);
+							percent = (fact - min) / (targ - min);
+						} else {
+							percent = 1;
+						}
+					}
+				}
+		    } else {
+				if (min < max) {
+					if (fact <= min) {
+						percent = 0;
+					} else {
+						if (fact <= targ) {
+							if (min == '') { 
+								min = 0;
+							}
+							min = Number(min);
+							if (targ == '') { 
+								targ = 0;
+							}
+							targ = Number(targ);
+							percent = (fact - min) / (targ - min);
+						} else {
+							percent = fact <= max ? 1+(0.5)*(fact - targ) / (max - targ) : 1.5;
+						}
+					}
+				} else {
+					if (fact >= min){
+						percent = 0;
+					} else {
+						if (fact >= targ) {
+							if (min == '') {
+								min = 0;
+							}
+							min = Number(min);
+							if (targ == '') {
+								targ = 0;
+							}
+							targ = Number(targ);
+							percent = (fact - min) / (targ - min);
+						} else {
+							percent = fact >= max ? 1+(0.5)*(fact - targ) / (max - targ) : 1.5;
+						}
+					}
+				}
+			}
+		}
+	}
+	return Math.round(percent * 100);
+}
+
 function getPercentComplete(fact, min, targ, max){
   if (fact === ''){
     return 0;
@@ -110,6 +223,7 @@ function getAllPercentComplete(tasks){
 
 module.exports = {
 	getPercentComplete: getPercentComplete,
+	getPercentCompleteFifth: getPercentCompleteFifth,
 	getSummWeight: getSummWeight,
 	getAllPercentComplete: getAllPercentComplete
 }
