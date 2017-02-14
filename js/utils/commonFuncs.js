@@ -18,11 +18,11 @@ var ceil = require('lodash/ceil');
 }*/
 
 function getPercentCompleteFifth(fact, min, targ, max){
-	if (fact == '') {
+	if (fact === '') {
 		return 0;
 	}
 
-	if (targ == '') {
+	if (targ === '') {
 		targ = 0;
 	}
 	
@@ -38,27 +38,27 @@ function getPercentCompleteFifth(fact, min, targ, max){
 	
 	var percent = 0;
 
-	if (min == "" && max == "" && targ != "") {
+	if (min === "" && max === "" && targ !== "") {
 		percent = fact == targ ? 1 : 0;
 	} else {
-		if (min == targ || min == "") {
+		if (min === targ || min === "") {
 			if (max > targ) {
 				percent = fact < targ ? 0 : fact < max ? 1+(0.5)*(fact - targ) / (max - targ) : 1.5;
 			} else {
 				percent = fact > targ ? 0 : fact > max ? 1+(0.5)*(fact - targ) / (max - targ) : 1.5;
 			}
 		} else {
-		    if (max == targ || max == "") {
+		    if (max == targ || max === "") {
 				if (min < targ) {
 					if (fact <= min) {
 						percent = 0;
 					} else {
 						if (fact < targ) {
-							if (min == '') { 
+							if (min === '') { 
 								min = 0;
 							} 
 							min = Number(min);
-							if (targ == '') { 
+							if (targ === '') { 
 								targ = 0;
 							}
 							targ = Number(targ);
@@ -72,11 +72,11 @@ function getPercentCompleteFifth(fact, min, targ, max){
 						percent = 0;
 					} else {
 						if (fact > targ) {
-							if (min == '') { 
+							if (min === '') { 
 								min = 0;
 							} 
 							min = Number(min);
-							if (targ == '') { 
+							if (targ === '') { 
 								targ = 0;
 							}
 							targ = Number(targ);
@@ -92,11 +92,11 @@ function getPercentCompleteFifth(fact, min, targ, max){
 						percent = 0;
 					} else {
 						if (fact <= targ) {
-							if (min == '') { 
+							if (min === '') { 
 								min = 0;
 							}
 							min = Number(min);
-							if (targ == '') { 
+							if (targ === '') { 
 								targ = 0;
 							}
 							targ = Number(targ);
@@ -110,11 +110,11 @@ function getPercentCompleteFifth(fact, min, targ, max){
 						percent = 0;
 					} else {
 						if (fact >= targ) {
-							if (min == '') {
+							if (min === '') {
 								min = 0;
 							}
 							min = Number(min);
-							if (targ == '') {
+							if (targ === '') {
 								targ = 0;
 							}
 							targ = Number(targ);
