@@ -11,5 +11,6 @@ module.exports = function(args){
 	this.targ = args.targ || '';
 	this.max = args.max || '';
 	this.fact = args.fact || '';
+	this.percent = args.percent || '';
 	this.comment = args.comment || '';
 }

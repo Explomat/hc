@@ -21,9 +21,11 @@ var Task = React.createClass({
 
 	render(){
 		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
-		var min = this.props.min;
-		var targ = this.props.targ;
-		var max = this.props.max;
+		var targ = this.props.targ ? ceil(this.props.targ, 2) : this.props.targ;
+		var max = this.props.max ? ceil(this.props.max, 2) : this.props.max;
+		var min = this.props.min ? ceil(this.props.min, 2) : this.props.min;
+		
+		var percent = this.props.percent ? ceil(this.props.percent, 2) : this.props.percent;
 		var styles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td);
 		var factStyles = assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.fact), styles);
 		return(
@@ -35,7 +37,7 @@ var Task = React.createClass({
 				<td style={styles}>{targ}</td>
 				<td style={styles}>{max}</td>
 				<td style={factStyles}>{fact}</td>
-				<td style={styles}>{commonFuncs.getPercentComplete(fact, min, targ, max)}</td>
+				<td style={styles}>{percent}</td>
 			</tr>
 		);
 	}

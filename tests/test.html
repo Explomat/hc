@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		function _isTasks(blocks){
+			var isContains = false;
+			if (blocks) {
+				var filteredBlocks = blocks.filter(function(item) {
+					if (item.tasks){
+						var filteredTasks = item.tasks.filter(function(t){
+							return t.title && t.weight === '100' && t.min && t.targ && t.max;
+						});
+						return filteredTasks.length === item.tasks.length;
+					}
+					return false;
+				});
+				isContains = filteredBlocks.length > 0;
+			}
+			return isContains;
+		}
+		var blocks = [
+			{
+				"title": "Основные задачи/Проекты на 2016 год",
+				"tasks": [
+					{
+						"title": "1",
+						"unit": "2",
+						"weight": "100",
+						"min": "1",
+						"targ": "2",
+						"max": "3",
+						"fact": "",
+						"comment": ""
+					},
+					{
+						"title": "12",
+						"unit": "2",
+						"weight": "00",
+						"min": "1",
+						"targ": "2",
+						"max": "3",
+						"fact": "",
+						"comment": ""
+					},
+					{
+						"title": "www",
+						"unit": "eee",
+						"weight": "00",
+						"min": "1",
+						"targ": "2",
+						"max": "3",
+						"fact": "",
+						"comment": ""
+					}
+				]
+			}
+		]
+		console.log(_isTasks(blocks));
+	</script>
+</head>
+<body>
+
+</body>
+</html>

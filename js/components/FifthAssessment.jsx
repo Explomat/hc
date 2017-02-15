@@ -16,6 +16,7 @@ var TextView = require('./modules/TextView');
 var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
 var AssessmentOfCompetencies = require('./AssessmentOfCompetencies');
+var filter = require('lodash/filter');
 
 function _isDisabledAll(step, isCollaborator, isBoss){
 	if (!isCollaborator && !isBoss){
@@ -118,9 +119,9 @@ var Task = React.createClass({
 
 		var block = AssessmentClasses.assessmentContainer.blockContainer.block;
 		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
-		var min = this.props.min;
-		var targ = this.props.targ;
-		var max = this.props.max;
+		var min = this.props.min ? ceil(this.props.min, 2) : this.props.min;
+		var targ = this.props.targ ? ceil(this.props.targ, 2) : this.props.targ;
+		var max = this.props.max ? ceil(this.props.max, 2) : this.props.max;
 		var styles = Obj.getScalarValues(block.task.td);
 		var inputStyles = Obj.getScalarValues(block.task.td.input);
 		var factStyles = assign(Obj.getScalarValues(block.task.fact), styles);
@@ -228,6 +229,31 @@ var FifthAssessment = React.createClass({
 		var previosAssessment = BaseStore.getPreviosAssessment();
 		return (previosAssessment.headers && previosAssessment.data);
 	},
+	
+	_isTasks(blocks){
+		var isContains = false;
+		if (blocks) {
+			var filteredBlocks = filter(blocks, function(item) {
+				if (item.tasks){
+					var filteredTasks = filter(item.tasks, function(t){
+						return t.title && t.weight === '100' && t.min && t.targ && t.max;
+					});
+					return filteredTasks.length === item.tasks.length;
+				}
+				return false;
+			});
+			isContains = filteredBlocks.length > 0;
+		}
+		return isContains;
+	},
+	
+	_removeButtons(){
+		$(".ass-button-container").css({display: 'none'});
+	},
+	
+	_addButtons(){
+		$(".ass-button-container").css({display: 'block'});
+	},
 
 	_changeZonesStyles(){
 		var mainZone = document.getElementById(config.dom.mainZoneId);
@@ -249,7 +275,7 @@ var FifthAssessment = React.createClass({
 				BaseActions.saveData(BaseStore.getData(), paId).then(function(){
 					self._isSaved = true;
 					$('#f_switch').submit();
-				})
+				});
 			}
 		});
 		/*var container = document.getElementsByClassName('WTCSS-comp-body')[0];
@@ -266,6 +292,24 @@ var FifthAssessment = React.createClass({
 		this._isSaved = false;
 		this._changeZonesStyles();
 		this._saveDataBeforeSubmit();
+		
+		if (this._isTasks(this.props.blocks) === false){
+			this._removeButtons();
+		}
+		else {
+			this._addButtons();
+		}
+	},
+	
+	componentWillReceiveProps(nextProps){
+		
+		//прячем функциональные кнопки, если нет ни одной добавленной задачи или поля не заполнены
+		if (this._isTasks(nextProps.blocks) === false){
+			this._removeButtons();
+		}
+		else {
+			this._addButtons();
+		}
 	},
 
 	render() {
