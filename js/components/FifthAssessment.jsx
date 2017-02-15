@@ -238,7 +238,7 @@ var FifthAssessment = React.createClass({
 					var filteredTasks = filter(item.tasks, function(t){
 						return t.title && t.weight === '100' && t.min && t.targ && t.max;
 					});
-					return filteredTasks.length === item.tasks.length;
+					return filteredTasks.length === item.tasks.length && filteredTasks.length > 0;
 				}
 				return false;
 			});
@@ -249,10 +249,14 @@ var FifthAssessment = React.createClass({
 	
 	_removeButtons(){
 		$(".ass-button-container").css({display: 'none'});
+		$("."+config.dom.infoClass).remove();
+		$("#" + config.dom.buttonsId)
+		.append("<div class=" + config.dom.infoClass + " style='color:red;'>Добавьте задачи и заполните все поля, чтобы сохранить и продолжить дальше!</div>");
 	},
 	
 	_addButtons(){
 		$(".ass-button-container").css({display: 'block'});
+		$("."+config.dom.infoClass).remove();
 	},
 
 	_changeZonesStyles(){

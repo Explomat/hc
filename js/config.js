@@ -45,7 +45,8 @@ module.exports = {
 		leftZoneId: 'wt-zone-left',
 		instructionId: 'weblms_assessment-instruction',
 		buttonsId: 'wl_assessment_buttons',
-		cutFormId: 'workflow_assessment_process'
+		cutFormId: 'workflow_assessment_process',
+		infoClass: 'wl_info'
 	},
 
 	setCustomBaseUrl(_customBaseUrl){
