@@ -236,9 +236,9 @@ var FifthAssessment = React.createClass({
 			var filteredBlocks = filter(blocks, function(item) {
 				if (item.tasks){
 					var filteredTasks = filter(item.tasks, function(t){
-						return t.title && t.weight === '100' && t.min && t.targ && t.max;
+						return t.title && t.min && t.targ && t.max;
 					});
-					return filteredTasks.length === item.tasks.length && filteredTasks.length > 0;
+					return filteredTasks.length === item.tasks.length && filteredTasks.length > 0 && commonFuncs.getSummWeight(item.tasks) === 100;
 				}
 				return false;
 			});

@@ -169,9 +169,9 @@ var Block = React.createClass({
 	},
 
 	render(){
-		if (this.props.tasks && this.props.tasks.length === 0) {
+		/*if (this.props.tasks && this.props.tasks.length === 0) {
 			return null;
-		}
+		}*/
 		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
 		var blockContainerStyles = Obj.getScalarValues(blockContainer);
 		var titleStyles = Obj.getScalarValues(blockContainer.block.title);
@@ -262,9 +262,9 @@ var FirstBlock = React.createClass({
 	},
 
 	render(){
-		if (this.props.tasks && this.props.tasks.length === 0) {
+		/*if (this.props.tasks && this.props.tasks.length === 0) {
 			return null;
-		}
+		}*/
 		var testInfo = this.props.testInfo;
 		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
 		var blockContainerStyles = Obj.getScalarValues(blockContainer);

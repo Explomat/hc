@@ -43,9 +43,9 @@ var Task = React.createClass({
 var Block = React.createClass({
 
 	render(){
-		if (this.props.tasks && this.props.tasks.length === 0) {
+		/*if (this.props.tasks && this.props.tasks.length === 0) {
 			return null;
-		}
+		}*/
 		var blockContainerStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer);
 		var titleStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.title);
 		var blockStyles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block);
