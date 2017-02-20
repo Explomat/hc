@@ -212,10 +212,27 @@ function getSummWeight(tasks){
 
 function getAllPercentComplete(tasks){
 	var summWeight = getSummWeight(tasks);
-
+	if (summWeight === 0) {
+		return 0;
+	}
+	
 	return ceil((tasks.length === 0 ? 0 : (tasks.map(function(t){
 		var percentComplete = getPercentComplete(t.fact, t.min, t.targ, t.max);
 		return Number(t.weight) * percentComplete;
+	}).reduce(function(first, second){
+		return first + second;
+	}))) / summWeight, 2);
+}
+
+function getAllPercentCompleteWithoutCalculate(tasks){
+	var summWeight = getSummWeight(tasks);
+	if (summWeight === 0) {
+		return 0;
+	}
+	
+	return ceil((tasks.length === 0 ? 0 : (tasks.map(function(t){
+		var percentComplete = t.percent || 0;
+		return Number(t.weight) * Number(percentComplete);
 	}).reduce(function(first, second){
 		return first + second;
 	}))) / summWeight, 2);
@@ -225,5 +242,6 @@ module.exports = {
 	getPercentComplete: getPercentComplete,
 	getPercentCompleteFifth: getPercentCompleteFifth,
 	getSummWeight: getSummWeight,
-	getAllPercentComplete: getAllPercentComplete
+	getAllPercentComplete: getAllPercentComplete,
+	getAllPercentCompleteWithoutCalculate: getAllPercentCompleteWithoutCalculate
 }

@@ -54,8 +54,8 @@ var MonthBlock = React.createClass({
 		var titleStyles = Obj.getScalarValues(blockContainer.block.title);
 		var blockStyles = Obj.getScalarValues(blockContainer.block);
 		var thStyles = Obj.getScalarValues(blockContainer.block.th);
-		var descriptionStyles = Obj.getScalarValues(blockContainer.block.description);
-		var descTableStyles = Obj.getScalarValues(blockContainer.descriptionTable);
+		//var descriptionStyles = Obj.getScalarValues(blockContainer.block.description);
+		//var descTableStyles = Obj.getScalarValues(blockContainer.descriptionTable);
 		return(
 			<div style={blockContainerStyles}>
 				<div style={titleStyles}>{this.props.title}</div>
@@ -78,7 +78,7 @@ var MonthBlock = React.createClass({
 						})}
 					</tbody>
 				</table>
-				<table style={descTableStyles}>
+				{/*<table style={descTableStyles}>
 					<tbody>
 						<tr>
 							<td style={descriptionStyles}>Суммарный вес индивидуальных показателей</td>
@@ -88,10 +88,10 @@ var MonthBlock = React.createClass({
 						<tr>
 							<td style={descriptionStyles}>% выполнения</td>
 							<td></td>
-							<td>{commonFuncs.getAllPercentComplete(this.props.tasks)}%</td>
+							<td>{commonFuncs.getAllPercentCompleteWithoutCalculate(this.props.tasks)}%</td>
 						</tr>
 					</tbody>
-				</table>
+				</table>*/}
 			</div>
 		);
 	}
@@ -174,7 +174,7 @@ var Block = React.createClass({
 							<tr>
 								<td style={descriptionStyles}>% выполнения</td>
 								<td></td>
-								<td>{commonFuncs.getAllPercentComplete(this.props.tasks)}%</td>
+								<td>{commonFuncs.getAllPercentCompleteWithoutCalculate(this.props.tasks)}%</td>
 							</tr>
 						</tbody>
 					</table>
@@ -205,7 +205,7 @@ var SecondAssessment = React.createClass({
 		});
 		var percent = 0;
 		blocks.forEach(function(b){
-			percent += commonFuncs.getAllPercentComplete(b.tasks);
+			percent += commonFuncs.getAllPercentCompleteWithoutCalculate(b.tasks);
 		});
 		return ceil(percent / blocks.length, 1);
 	},

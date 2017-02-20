@@ -24,7 +24,7 @@ var CollaboratorInstruction = React.createClass({
 
 						4. Далее «Отправить на оценку руководителем».<br />
 
-						5. По возникающим вопросам, необходимо обращаться на адрес <a target="__blank" href="http://otsenka@homecredit.ru">otsenka@homecredit.ru</a><br />
+						5. По возникающим вопросам, посетите наш <a target="__blank" href="/view_doc.html?mode=forum_assessment&object_id=6384306128690555642">форум</a><br />
 					</i>
 				</p>
 			</div> 
