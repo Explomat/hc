@@ -13,9 +13,7 @@ var BossInstruction = require('./instructions/BossInstruction');
 var CollaboratorInstruction = require('./instructions/CollaboratorInstruction');
 var AssessmentOfCompetencies = require('./AssessmentOfCompetencies');
 
-var UrlUtils = require('../utils/url');
 var config = require('../config');
-var AssessmentActions = require('../actions/AssessmentActions');
 
 var Task = React.createClass({
 
@@ -86,17 +84,8 @@ var Block = React.createClass({
 	
 	getInitialState(){
 		return {
-			isDisplayMessage: false
+			isDisplayMonths: false
 		}	
-	},
-	
-	componentWillReceiveProps(){
-		/*var isDisplayMessage = this.state.isDisplayMessage;
-		var message = this.props.testInfo.message;
-		if (isDisplayMessage && message){
-			alert(message);
-			this.setState({isDisplayMessage: false});
-		}*/
 	},
 
 	_isContainsTasks(){
@@ -110,67 +99,71 @@ var Block = React.createClass({
 		return isContains;
 	},
 	
-	handleCreateTest(){
-		this.setState({isDisplayMessage: true});
-		var paId = UrlUtils.getUrlParams(window.location.href, 'pa_id');
-		AssessmentActions.createTest(paId);
+	getToggleMonthsButtonMarkup(){
+		var showMonthsStyles = assign(
+			Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.testInfo.showMonths),
+			{ top: '10px', position: 'relative' }
+		);
+		return this.state.isDisplayMonths ?
+				<span onClick={this.handleToggleMonthsData} style={showMonthsStyles}>Скрыть &uarr;</span>:
+				<span onClick={this.handleToggleMonthsData} style={showMonthsStyles}>Показать по месяцам &darr;</span>
 	},
 	
-	getTestInfoMarkup(){
-		var isCollaborator = BaseStore.isCollaborator();
-		var testInfo = this.props.testInfo;
-		var isAssignTest = testInfo.isAssignTest;
-		var isPassTest = testInfo.isPassTest;
-		
-		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
-		var thStyles = Obj.getScalarValues(blockContainer.block.th);
-		var tdStyles = Obj.getScalarValues(blockContainer.block.task.td);
-		var testInfoDescriptionStyles = Obj.getScalarValues(blockContainer.block.testInfo.description.displayDescription);
-		
-		if (isAssignTest){
-			if (isPassTest){
-				return(
-					<table style={testInfoDescriptionStyles}>
-						<thead>
-							<tr>
-								<th style={thStyles}>Название</th>
-								<th style={thStyles}>Результат</th>
-								<th style={thStyles}>Статус</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td style={tdStyles}>{testInfo.name}</td>
-								<td style={tdStyles}>{testInfo.score}</td>
-								<td style={tdStyles}>{testInfo.state}</td>
-							</tr>
-						</tbody>
-					</table>
-				);
-			}
-			else {
-				return (isCollaborator && <div>Тест назначен. Для его прохождения перейдите по ссылке, отправленной вам на почту.</div>)
-			}
-		}
-		return (isCollaborator && <input type="button" className="ass-button" onClick={this.handleCreateTest} value="Пройти тест" />)
+	handleToggleMonthsData(){
+		this.setState({isDisplayMonths: !this.state.isDisplayMonths});
 	},
-
+	
 	render(){
 		var blockContainer = AssessmentClasses.assessmentContainer.blockContainer;
 		var blockContainerStyles = Obj.getScalarValues(blockContainer);
-		//var testInfoStyles = Obj.getScalarValues(blockContainer.block.testInfo);
+		var titleStyles = Obj.getScalarValues(blockContainer.block.title);
+		//var tableContainerStyles = Obj.getScalarValues(blockContainer.block.tableContainer);
+		var blockStyles = Obj.getScalarValues(blockContainer.block);
+		var thStyles = Obj.getScalarValues(blockContainer.block.th);
+		//var descriptionStyles = Obj.getScalarValues(blockContainer.block.description);
+		var monthsDataStyles = !this.state.isDisplayMonths ? Obj.getScalarValues(blockContainer.block.monthsData) : Obj.getScalarValues(blockContainer.block.monthsData.displayMonthsData);
+		var tasksResultStyles = Obj.getScalarValues(blockContainer.block.tasksResult);
+		var ratingStyles = Obj.getScalarValues(blockContainer.block.tasksResult.rating);
+		var positionDescrStyles = Obj.getScalarValues(blockContainer.block.tasksResult.rating.description);
+		var ratingDescrStyles = Obj.getScalarValues(blockContainer.block.tasksResult.position.description);
 		return(
 			<div style={blockContainerStyles}>
-				<div>
-					{this._isContainsTasks() && this.props.monthData.map(function(m, index){
-						return <MonthBlock key={index} {...m} />
-					})}
+				<div style={titleStyles}>{this.props.title}</div>
+				<div style={{paddingBottom: '10px', borderBottom: '1px solid #ccc'}}>
+					<table style={blockStyles}>
+						<thead>
+							<tr>
+								<th style={thStyles}>Наименование</th>
+								<th style={thStyles}>ед. изм-я</th>
+								<th style={thStyles}>вес, %</th>
+								<th style={thStyles}>ФАКТ</th>
+							</tr>
+						</thead>
+						<tbody>
+							{this.props.tasks.map(function(t, index){
+								return <Task key={index} {...t} />
+							})}
+						</tbody>
+					</table>
+					<div style={tasksResultStyles}>
+						<span>
+							<span style={positionDescrStyles}>Позиция в рейтинге: </span>
+							<span> {this.props.tasksResult.position}</span>
+						</span>
+						<span style={ratingStyles}>
+							<span style={ratingDescrStyles}>Соответствие рейтингу: </span>
+							<span> {this.props.tasksResult.rating}</span>
+						</span>
+					</div>
+					{this.getToggleMonthsButtonMarkup()}
 				</div>
-				{/*<div style={testInfoStyles}>
-					{this.getTestInfoMarkup()}
-				</div>*/}
+				<div style={monthsDataStyles}>
+					{this._isContainsTasks() ? this.props.monthData.map(function(m, index){
+						return <MonthBlock key={index} {...m} />
+					}) : <div>Нет данных</div>}
+				</div>
 			</div>
-		);
+		); 
 	}
 });
 

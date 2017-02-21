@@ -98,6 +98,7 @@ var AssessmentClasses = {
 				},
 				tasksResult: {
 					paddingTop: '10px',
+					display: 'inline-block',
 
 					rating: {
 						marginLeft: '20px',
