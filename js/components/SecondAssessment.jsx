@@ -20,12 +20,12 @@ var config = require('../config');
 var Task = React.createClass({
 
 	render(){
-		var fact = this.props.fact ? ceil(this.props.fact, 2) : this.props.fact;
-		var targ = this.props.targ ? ceil(this.props.targ, 2) : this.props.targ;
-		var max = this.props.max ? ceil(this.props.max, 2) : this.props.max;
-		var min = this.props.min ? ceil(this.props.min, 2) : this.props.min;
+		var fact = this.props.fact; //  ? ceil(this.props.fact, 2) : this.props.fact;
+		var targ = this.props.targ; // ? ceil(this.props.targ, 2) : this.props.targ;
+		var max = this.props.max; // ? ceil(this.props.max, 2) : this.props.max;
+		var min = this.props.min; // ? ceil(this.props.min, 2) : this.props.min;
 		
-		var percent = this.props.percent ? ceil(this.props.percent, 2) : this.props.percent;
+		var percent = this.props.percent; // ? ceil(this.props.percent, 2) : this.props.percent;
 		var styles = Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.td);
 		var factStyles = assign(Obj.getScalarValues(AssessmentClasses.assessmentContainer.blockContainer.block.task.fact), styles);
 		return(
