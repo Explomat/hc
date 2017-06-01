@@ -67,11 +67,11 @@ var MonthBlock = React.createClass({
 				</table>
 				<div style={tasksResultStyles}>
 					<span>
-						<span style={positionDescrStyles}>Позиция в рейтинге: </span>
+						<span style={positionDescrStyles}>Результат: </span>
 						<span> {this.props.tasksResult.position}</span>
 					</span>
 					<span style={ratingStyles}>
-						<span style={ratingDescrStyles}>Соответствие рейтингу: </span>
+						<span style={ratingDescrStyles}>Соответствие: </span>
 						<span> {this.props.tasksResult.rating}</span>
 					</span>
 				</div>
@@ -147,11 +147,11 @@ var Block = React.createClass({
 					</table>
 					<div style={tasksResultStyles}>
 						<span>
-							<span style={positionDescrStyles}>Позиция в рейтинге: </span>
+							<span style={positionDescrStyles}>Результат: </span>
 							<span> {this.props.tasksResult.position}</span>
 						</span>
 						<span style={ratingStyles}>
-							<span style={ratingDescrStyles}>Соответствие рейтингу: </span>
+							<span style={ratingDescrStyles}>Соответствие: </span>
 							<span> {this.props.tasksResult.rating}</span>
 						</span>
 					</div>
